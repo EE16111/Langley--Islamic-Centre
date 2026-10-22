@@ -49,7 +49,7 @@ export default function SpitfireLocationSection() {
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("Spitfire Close, Langley, SL3 8GY")}`;
 
   return (
-    <section id="spitfire-close" className="py-24 relative bg-[#080b10] border-t border-[#c5a059]/20 bg-jali-pattern">
+    <section id="spitfire-close" className="py-24 relative bg-transparent border-t border-[#c5a059]/20 bg-jali-pattern">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Architectural Section Header */}

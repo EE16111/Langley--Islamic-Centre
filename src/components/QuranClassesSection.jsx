@@ -16,7 +16,7 @@ export default function QuranClassesSection({ onOpenQuranModal }) {
   const qc = LIC_DATA.quranClasses;
 
   return (
-    <section id="quran-classes" className="py-28 relative bg-[#080b10] border-t border-[#c5a059]/15 overflow-hidden">
+    <section id="quran-classes" className="py-28 relative bg-transparent border-t border-[#c5a059]/15 overflow-hidden">
       {/* Background Girih Lattice Watermark */}
       <div className="absolute inset-0 bg-jali-pattern opacity-[0.03] pointer-events-none" />
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#c5a059]/5 rounded-full blur-3xl pointer-events-none" />

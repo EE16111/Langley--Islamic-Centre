@@ -20,10 +20,17 @@ import QiblaModal from './components/QiblaModal';
 import SpiritualAudioPlayer from './components/SpiritualAudioPlayer';
 import AdminDashboardModal from './components/AdminDashboardModal';
 import MosqueTVSignageModal from './components/MosqueTVSignageModal';
+import SZGMCPrayerWidget from './components/SZGMCPrayerWidget';
+import ThemeSwitcher from './components/ThemeSwitcher';
+import { useTheme } from './context/ThemeContext';
 
 import { calculatePrayerTimes, getNextPrayer, subscribePrayerCMS } from './utils/prayerTimes';
 
 export default function App() {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+  const isAmbient = theme === 'ambient';
+
   const [asrHanafi, setAsrHanafi] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [cmsVersion, setCmsVersion] = useState(0);
@@ -75,7 +82,13 @@ export default function App() {
   const nextPrayer = getNextPrayer(prayerData.prayers, currentTime);
 
   return (
-    <div className="min-h-screen bg-[#070c14] text-slate-100 flex flex-col font-sans">
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-400 ${
+      isLight
+        ? 'bg-[#fbf9f4] text-stone-900'
+        : isAmbient
+        ? 'bg-[#09101d] text-slate-100'
+        : 'bg-[#080b10] text-slate-100'
+    }`}>
       
       {/* Top Navigation */}
       <Navbar 
@@ -204,6 +217,16 @@ export default function App() {
 
       {/* Floating Spiritual Audio Bar */}
       <SpiritualAudioPlayer />
+
+      {/* Persistent Sheikh Zayed Grand Mosque (SZGMC) Floating Prayer Widget */}
+      <SZGMCPrayerWidget 
+        prayerData={prayerData}
+        nextPrayer={nextPrayer}
+        onOpenTimetable={() => setTimetableModalOpen(true)}
+      />
+
+      {/* Floating Theme Switcher Quick Toggle (Bottom-Left) */}
+      <ThemeSwitcher variant="floating" />
 
     </div>
   );

@@ -50,7 +50,7 @@ export default function DonationSection({ onOpenFloorPlan, onOpenStandingOrder }
   const impact = getSliderImpact(sliderAmount);
 
   return (
-    <section id="donations" className="py-24 relative bg-[#080b10] border-t border-[#c5a059]/20 bg-jali-pattern">
+    <section id="donations" className="py-24 relative bg-transparent border-t border-[#c5a059]/20 bg-jali-pattern">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}

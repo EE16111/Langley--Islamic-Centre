@@ -7,7 +7,7 @@ export default function ValuesSection() {
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
 
   return (
-    <section className="py-28 relative bg-[#070b12] border-t border-[#c5a059]/15 overflow-hidden">
+    <section className="py-28 relative bg-transparent border-t border-[#c5a059]/15 overflow-hidden">
       {/* Background Girih Lattice */}
       <div className="absolute inset-0 bg-jali-pattern opacity-[0.03] pointer-events-none" />
 

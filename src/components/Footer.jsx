@@ -1,6 +1,7 @@
 import React from 'react';
 import { LIC_DATA } from '../data/content';
 import LicLogo from './LicLogo';
+import { useTheme } from '../context/ThemeContext';
 import { 
   Heart, 
   MapPin, 
@@ -26,12 +27,22 @@ export default function Footer({
   onOpenAdmin,
   onOpenTVSignage
 }) {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+  const isAmbient = theme === 'ambient';
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <footer id="contact" className="bg-[#04060a] border-t border-[#c5a059]/20 text-slate-400 text-xs sm:text-sm pt-20 pb-12 relative overflow-hidden">
+    <footer id="contact" className={`border-t text-xs sm:text-sm pt-20 pb-12 relative overflow-hidden transition-colors duration-400 ${
+      isLight 
+        ? 'bg-[#f4efe4] border-[#b38728]/30 text-stone-600' 
+        : isAmbient 
+        ? 'bg-[#060b14] border-[#e2a844]/25 text-slate-400' 
+        : 'bg-[#04060a] border-[#c5a059]/20 text-slate-400'
+    }`}>
       {/* Background Girih Lattice Watermark */}
       <div className="absolute inset-0 bg-jali-pattern opacity-[0.02] pointer-events-none" />
 

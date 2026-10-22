@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LIC_DATA } from '../data/content';
 import LicLogo from './LicLogo';
+import { useTheme } from '../context/ThemeContext';
 import { 
   Heart, 
   MapPin, 
@@ -33,6 +34,10 @@ export default function Hero({
   onOpenStandingOrder,
   onOpenQibla
 }) {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+  const isAmbient = theme === 'ambient';
+
   const [copiedBank, setCopiedBank] = useState(false);
   const [logoTheme, setLogoTheme] = useState('gold'); // 'gold' default for authentic sanctuary feel
   const [bgPhoto, setBgPhoto] = useState('mosque'); // 'mosque' | 'spitfire'
@@ -55,19 +60,41 @@ Charity Reg No: 1180443`;
   };
 
   return (
-    <section className="relative min-h-[780px] lg:min-h-[880px] flex items-center justify-center pt-36 sm:pt-40 pb-20 overflow-hidden bg-[#080b10] bg-jali-pattern">
+    <section className={`relative min-h-[780px] lg:min-h-[880px] flex items-center justify-center pt-36 sm:pt-40 pb-20 overflow-hidden bg-jali-pattern transition-colors duration-400 ${
+      isLight ? 'bg-[#fbf9f4]' : isAmbient ? 'bg-[#09101d]' : 'bg-[#080b10]'
+    }`}>
       
       {/* Real Mosque Architectural Photographic Backdrop */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
           src={bgPhoto === 'mosque' ? '/src/assets/mosque_hero_bg.jpg' : '/src/assets/SpitFireSlider.jpg'}
           alt="Mosque Architectural Sanctuary Backdrop"
-          className="w-full h-full object-cover object-center scale-105 opacity-30 sm:opacity-40 transition-all duration-1000 filter brightness-90 contrast-125"
+          className={`w-full h-full object-cover object-center scale-105 transition-all duration-1000 filter contrast-125 ${
+            isLight ? 'opacity-20 brightness-105' : 'opacity-35 brightness-90'
+          }`}
         />
-        {/* Architectural Vignette: Obsidian & Deep Warm Charcoal */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080b10] via-[#080b10]/90 to-[#080b10]/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080b10] via-transparent to-[#080b10]/95" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080b10]/90 via-transparent to-[#080b10]" />
+        {/* Architectural Vignette */}
+        <div className={`absolute inset-0 ${
+          isLight
+            ? 'bg-gradient-to-r from-[#fbf9f4] via-[#fbf9f4]/95 to-[#fbf9f4]/75'
+            : isAmbient
+            ? 'bg-gradient-to-r from-[#09101d] via-[#09101d]/90 to-[#09101d]/70'
+            : 'bg-gradient-to-r from-[#080b10] via-[#080b10]/90 to-[#080b10]/70'
+        }`} />
+        <div className={`absolute inset-0 ${
+          isLight
+            ? 'bg-gradient-to-t from-[#fbf9f4] via-transparent to-[#fbf9f4]/95'
+            : isAmbient
+            ? 'bg-gradient-to-t from-[#09101d] via-transparent to-[#09101d]/95'
+            : 'bg-gradient-to-t from-[#080b10] via-transparent to-[#080b10]/95'
+        }`} />
+        <div className={`absolute inset-0 ${
+          isLight
+            ? 'bg-gradient-to-b from-[#fbf9f4]/95 via-transparent to-[#fbf9f4]'
+            : isAmbient
+            ? 'bg-gradient-to-b from-[#09101d]/90 via-transparent to-[#09101d]'
+            : 'bg-gradient-to-b from-[#080b10]/90 via-transparent to-[#080b10]'
+        }`} />
         {/* Subtle Antique Brass Tone Wash */}
         <div className="absolute inset-0 bg-[#3d2f13]/10 mix-blend-color" />
       </div>
@@ -81,14 +108,16 @@ Charity Reg No: 1180443`;
       </div>
 
       {/* Backdrop Scene Switcher */}
-      <div className="absolute top-28 right-4 sm:right-10 z-20 hidden sm:flex items-center gap-1.5 p-1 rounded-full bg-[#0e141f]/90 border border-[#c5a059]/25 shadow-xl backdrop-blur-xl text-[10px]">
+      <div className={`absolute top-28 right-4 sm:right-10 z-20 hidden sm:flex items-center gap-1.5 p-1 rounded-full shadow-xl backdrop-blur-xl text-[10px] ${
+        isLight ? 'bg-white/90 border border-[#b38728]/30' : 'bg-[#0e141f]/90 border border-[#c5a059]/25'
+      }`}>
         <span className="pl-2.5 pr-1 text-[#c5a059] font-serif uppercase tracking-widest text-[9px]">Viewpoint:</span>
         <button
           onClick={() => setBgPhoto('mosque')}
           className={`px-3 py-1 rounded-full font-serif font-bold transition-all ${
             bgPhoto === 'mosque'
               ? 'bg-[#c5a059] text-[#080b10] shadow-sm'
-              : 'text-stone-400 hover:text-white'
+              : isLight ? 'text-stone-600 hover:text-stone-900' : 'text-stone-400 hover:text-white'
           }`}
         >
           Grand Arches
@@ -98,7 +127,7 @@ Charity Reg No: 1180443`;
           className={`px-3 py-1 rounded-full font-serif font-bold transition-all ${
             bgPhoto === 'spitfire'
               ? 'bg-[#c5a059] text-[#080b10] shadow-sm'
-              : 'text-stone-400 hover:text-white'
+              : isLight ? 'text-stone-600 hover:text-stone-900' : 'text-stone-400 hover:text-white'
           }`}
         >
           Spitfire Close
@@ -118,12 +147,16 @@ Charity Reg No: 1180443`;
         </div>
 
         {/* Permanent Sanctuary Civic Trust Seal */}
-        <div className="mb-8 inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-[#111722]/80 border border-[#c5a059]/30 shadow-lg backdrop-blur-xl">
+        <div className={`mb-8 inline-flex items-center gap-3 px-4 py-1.5 rounded-full shadow-lg backdrop-blur-xl ${
+          isLight ? 'bg-white/90 border border-[#b38728]/30' : 'bg-[#111722]/80 border border-[#c5a059]/30'
+        }`}>
           <span className="flex h-2 w-2 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c5a059] opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#dfb76c]"></span>
           </span>
-          <span className="font-serif text-xs sm:text-sm text-[#f4f0e6] font-medium tracking-wide">
+          <span className={`font-serif text-xs sm:text-sm font-medium tracking-wide ${
+            isLight ? 'text-stone-800' : 'text-[#f4f0e6]'
+          }`}>
             Unit 2, Spitfire Close, Langley <span className="text-[#c5a059] mx-1">•</span> Permanent Waqf Sanctuary
           </span>
           <span className="hidden md:inline-flex items-center px-2 py-0.2 rounded text-[9px] font-mono uppercase bg-[#c5a059]/15 text-[#dfb76c] border border-[#c5a059]/30">
@@ -140,13 +173,15 @@ Charity Reg No: 1180443`;
               glow={true} 
             />
             {/* Theme switcher pill */}
-            <div className="absolute -bottom-3.5 left-1/2 -translate-x-1/2 flex items-center gap-1 p-1 rounded-full bg-[#0a0e16] border border-[#c5a059]/35 shadow-2xl backdrop-blur-xl">
+            <div className={`absolute -bottom-3.5 left-1/2 -translate-x-1/2 flex items-center gap-1 p-1 rounded-full shadow-2xl backdrop-blur-xl ${
+              isLight ? 'bg-white border border-[#b38728]/35' : 'bg-[#0a0e16] border border-[#c5a059]/35'
+            }`}>
               <button
                 onClick={() => setLogoTheme('gold')}
                 className={`px-2.5 py-0.5 rounded-full text-[10px] font-serif font-bold tracking-wider transition-all ${
                   logoTheme === 'gold' 
                     ? 'bg-[#c5a059] text-[#080b10] shadow-sm' 
-                    : 'text-stone-400 hover:text-white'
+                    : isLight ? 'text-stone-600 hover:text-stone-900' : 'text-stone-400 hover:text-white'
                 }`}
                 title="Gilded Antique Gold"
               >
@@ -157,7 +192,7 @@ Charity Reg No: 1180443`;
                 className={`px-2.5 py-0.5 rounded-full text-[10px] font-serif font-bold tracking-wider transition-all ${
                   logoTheme === 'white' 
                     ? 'bg-stone-200 text-[#080b10] shadow-sm' 
-                    : 'text-stone-400 hover:text-white'
+                    : isLight ? 'text-stone-600 hover:text-stone-900' : 'text-stone-400 hover:text-white'
                 }`}
                 title="Monochrome Alabaster"
               >
@@ -168,7 +203,7 @@ Charity Reg No: 1180443`;
                 className={`px-2.5 py-0.5 rounded-full text-[10px] font-serif font-bold tracking-wider transition-all ${
                   logoTheme === 'original' 
                     ? 'bg-sky-500 text-white shadow-sm' 
-                    : 'text-stone-400 hover:text-white'
+                    : isLight ? 'text-stone-600 hover:text-stone-900' : 'text-stone-400 hover:text-white'
                 }`}
                 title="Founding Colours"
               >
@@ -179,12 +214,16 @@ Charity Reg No: 1180443`;
         </div>
 
         {/* Monumental Editorial Headlines */}
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif text-[#f4f0e6] max-w-4xl leading-[1.08] tracking-tight">
+        <h1 className={`text-4xl sm:text-6xl lg:text-7xl font-serif max-w-4xl leading-[1.08] tracking-tight ${
+          isLight ? 'text-stone-900' : 'text-[#f4f0e6]'
+        }`}>
           In the heart of Langley, <br />
           <span className="shimmer-gold italic font-normal">a sanctuary for generations.</span>
         </h1>
 
-        <p className="mt-5 text-base sm:text-lg text-stone-300/90 max-w-2xl font-sans font-light leading-relaxed">
+        <p className={`mt-5 text-base sm:text-lg max-w-2xl font-sans font-light leading-relaxed ${
+          isLight ? 'text-stone-700' : 'text-stone-300/90'
+        }`}>
           {LIC_DATA.tagline} United in faith, learning, and service. Help us secure the remaining £550,000 to purchase our permanent home on Spitfire Close debt-free.
         </p>
 
@@ -261,7 +300,11 @@ Charity Reg No: 1180443`;
         <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
           <button
             onClick={onOpenFloorPlan}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-serif font-bold text-[#dfb76c] bg-[#141b27] hover:bg-[#1c2738] border border-[#c5a059]/30 shadow-sm transition-all hover:scale-105"
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-serif font-bold transition-all hover:scale-105 ${
+              isLight
+                ? 'text-[#8c671b] bg-white hover:bg-stone-50 border border-[#b38728]/35 shadow-sm'
+                : 'text-[#dfb76c] bg-[#141b27] hover:bg-[#1c2738] border border-[#c5a059]/30 shadow-sm'
+            }`}
           >
             <Layers className="w-3.5 h-3.5 text-[#dfb76c]" />
             <span>Waqf Prayer Hall Spatial Map (96 Musallah Spots)</span>
@@ -269,7 +312,11 @@ Charity Reg No: 1180443`;
 
           <button
             onClick={onOpenStandingOrder}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-serif font-medium text-stone-300 bg-[#111722] hover:bg-[#1a2333] border border-stone-800 transition-all hover:text-white hover:scale-105"
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-serif font-medium transition-all hover:scale-105 ${
+              isLight
+                ? 'text-stone-700 bg-white hover:bg-stone-50 border border-stone-200 shadow-sm hover:text-stone-900'
+                : 'text-stone-300 bg-[#111722] hover:bg-[#1a2333] border border-stone-800 hover:text-white'
+            }`}
           >
             <FileText className="w-3.5 h-3.5 text-[#c5a059]" />
             <span>Monthly Bank Standing Order Mandate</span>
@@ -277,7 +324,11 @@ Charity Reg No: 1180443`;
 
           <button
             onClick={onOpenQibla}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-serif font-medium text-stone-300 bg-[#111722] hover:bg-[#1a2333] border border-stone-800 transition-all hover:text-white hover:scale-105"
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-serif font-medium transition-all hover:scale-105 ${
+              isLight
+                ? 'text-stone-700 bg-white hover:bg-stone-50 border border-stone-200 shadow-sm hover:text-stone-900'
+                : 'text-stone-300 bg-[#111722] hover:bg-[#1a2333] border border-stone-800 hover:text-white'
+            }`}
           >
             <Compass className="w-3.5 h-3.5 text-[#c5a059]" />
             <span>Langley Qibla Compass (118.9° ESE)</span>
@@ -286,15 +337,19 @@ Charity Reg No: 1180443`;
 
         {/* Official UK Charity Banking Guarantee Ledger */}
         <div className="mt-8 pt-6 border-t border-[#c5a059]/15 max-w-3xl w-full">
-          <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-2xl bg-[#0c1017]/90 border border-[#c5a059]/20 text-xs text-stone-300 shadow-xl">
+          <div className={`flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-2xl text-xs shadow-xl transition-all ${
+            isLight
+              ? 'bg-white/95 border border-[#b38728]/25 text-stone-700'
+              : 'bg-[#0c1017]/90 border border-[#c5a059]/20 text-stone-300'
+          }`}>
             <div className="flex items-center gap-2 text-left">
               <ShieldCheck className="w-4 h-4 text-[#dfb76c] flex-shrink-0" />
               <div>
-                <strong className="text-[#f4f0e6] font-serif tracking-wide block">
+                <strong className={`font-serif tracking-wide block ${isLight ? 'text-stone-900' : 'text-[#f4f0e6]'}`}>
                   Official HSBC UK Trust Account • 100% Policy
                 </strong>
-                <span className="text-[11px] text-stone-400 font-mono">
-                  Langley Islamic Centre • A/C: <span className="text-[#f4f0e6] font-bold">0249 4973</span> • S/C: <span className="text-[#f4f0e6] font-bold">40-42-08</span>
+                <span className={`text-[11px] font-mono ${isLight ? 'text-stone-500' : 'text-stone-400'}`}>
+                  Langley Islamic Centre • A/C: <span className={`font-bold ${isLight ? 'text-stone-900' : 'text-[#f4f0e6]'}`}>0249 4973</span> • S/C: <span className={`font-bold ${isLight ? 'text-stone-900' : 'text-[#f4f0e6]'}`}>40-42-08</span>
                 </span>
               </div>
             </div>
@@ -304,6 +359,8 @@ Charity Reg No: 1180443`;
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-serif font-bold transition-all ${
                 copiedBank
                   ? 'bg-[#1b4931] text-[#74c69d] border border-[#2d6a4f]'
+                  : isLight
+                  ? 'bg-gradient-to-r from-[#dfb76c] to-[#c5a059] text-[#080b10] hover:brightness-105 shadow-sm'
                   : 'bg-[#162030] hover:bg-[#1e2d42] text-[#dfb76c] border border-[#c5a059]/30'
               }`}
             >

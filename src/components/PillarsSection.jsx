@@ -30,7 +30,7 @@ export default function PillarsSection({ onOpenVolunteerModal }) {
   };
 
   return (
-    <section id="community-pillars" className="py-28 relative bg-[#070b12] border-t border-[#c5a059]/15 overflow-hidden">
+    <section id="community-pillars" className="py-28 relative bg-transparent border-t border-[#c5a059]/15 overflow-hidden">
       {/* Background Girih Lattice */}
       <div className="absolute inset-0 bg-jali-pattern opacity-[0.03] pointer-events-none" />
 
