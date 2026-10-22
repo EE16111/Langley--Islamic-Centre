@@ -4,7 +4,7 @@ import {
   Download, 
   Calendar as CalendarIcon, 
   Table, 
-  Sparkles, 
+  Moon, 
   ChevronLeft, 
   ChevronRight,
   Printer, 
@@ -227,7 +227,7 @@ export default function TimetableModal({ isOpen, onClose, onOpenAdmin }) {
                   : 'text-stone-400 hover:text-white'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#dfb76c]" />
+              <Moon className="w-3.5 h-3.5 text-[#dfb76c]" />
               <span>Ramadan 1447</span>
             </button>
           </div>
@@ -462,7 +462,7 @@ export default function TimetableModal({ isOpen, onClose, onOpenAdmin }) {
               <div className="p-6 rounded-3xl sanctuary-plaque border border-[#74c69d]/40 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-[#1b4931]/60 border border-[#74c69d]/50 flex items-center justify-center text-[#74c69d]">
-                    <Sparkles className="w-7 h-7" />
+                    <Moon className="w-7 h-7" />
                   </div>
                   <div>
                     <span className="text-[10px] font-mono uppercase tracking-widest text-[#74c69d] font-bold">

@@ -1,6 +1,6 @@
 import React from 'react';
 import { LIC_DATA } from '../data/content';
-import { Compass, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Compass, CheckCircle2 } from 'lucide-react';
 
 export default function ValuesSection() {
   const values = LIC_DATA.values;

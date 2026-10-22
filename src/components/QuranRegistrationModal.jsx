@@ -12,7 +12,6 @@ import {
   User, 
   Phone, 
   Mail, 
-  Sparkles,
   Download
 } from 'lucide-react';
 import confetti from 'canvas-confetti';

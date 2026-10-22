@@ -13,7 +13,6 @@ import {
   Share2, 
   CheckCircle2, 
   Flame, 
-  Sparkles,
   UtensilsCrossed
 } from 'lucide-react';
 
@@ -273,7 +272,6 @@ export default function StoryViewerModal({
           <div className="absolute inset-x-0 bottom-0 p-5 z-20 flex flex-col justify-end text-white">
             {/* Tagline */}
             <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-amber-300 mb-1.5">
-              <Sparkles className="w-3.5 h-3.5" />
               {currentSlide.tagline}
             </span>
 
@@ -411,7 +409,6 @@ export default function StoryViewerModal({
                   }}
                   className="w-full py-2.5 px-4 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 text-neutral-950 shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                 >
-                  <Sparkles className="w-4 h-4 text-neutral-950" />
                   {currentSlide.ctaText}
                 </button>
               </div>

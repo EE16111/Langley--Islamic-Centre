@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { LIC_DATA } from '../data/content';
 import { 
   Heart, 
-  Sparkles, 
   Copy, 
   Check, 
   ExternalLink, 
@@ -167,7 +166,7 @@ export default function DonationSection({ onOpenFloorPlan, onOpenStandingOrder }
         <div className="max-w-3xl mx-auto mb-16 p-6 sm:p-8 rounded-3xl sanctuary-plaque">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2 text-xs sm:text-sm font-serif font-bold text-[#dfb76c]">
-              <Sparkles className="w-4 h-4 text-[#dfb76c]" />
+              <Heart className="w-4 h-4 text-[#dfb76c]" />
               <span>Interactive Waqf Impact Calculator</span>
             </div>
             <span className="text-3xl sm:text-4xl font-mono font-black text-[#f4f0e6]">

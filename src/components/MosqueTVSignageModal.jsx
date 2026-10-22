@@ -7,7 +7,7 @@ import {
   Calendar, 
   Tv, 
   QrCode, 
-  Sparkles, 
+  Info, 
   Volume2, 
   HeartHandshake,
   ShieldAlert,
@@ -216,7 +216,7 @@ export default function MosqueTVSignageModal({ isOpen, onClose }) {
           {/* Marquee Ticker */}
           <div className="mt-6 p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center gap-4 overflow-hidden">
             <span className="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5 shrink-0">
-              <Sparkles className="w-3.5 h-3.5" />
+              <Info className="w-3.5 h-3.5" />
               <span>Hadith of the Day</span>
             </span>
             <div className="text-xs text-slate-300 italic truncate font-serif">

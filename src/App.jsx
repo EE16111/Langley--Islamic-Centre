@@ -17,6 +17,7 @@ import VolunteerModal from './components/VolunteerModal';
 import WaqfFloorPlanModal from './components/WaqfFloorPlanModal';
 import StandingOrderGeneratorModal from './components/StandingOrderGeneratorModal';
 import QiblaModal from './components/QiblaModal';
+import QiblaPage from './components/QiblaPage';
 import SpiritualAudioPlayer from './components/SpiritualAudioPlayer';
 import AdminDashboardModal from './components/AdminDashboardModal';
 import MosqueTVSignageModal from './components/MosqueTVSignageModal';
@@ -50,10 +51,17 @@ export default function App() {
   const [tvModalOpen, setTvModalOpen] = useState(false);
   const [storyViewerOpen, setStoryViewerOpen] = useState(false);
   const [activeStoryIndex, setActiveStoryIndex] = useState(0);
+  const [viewMode, setViewMode] = useState('home'); // 'home' | 'qibla'
 
   const handleOpenStory = (index = 0) => {
     setActiveStoryIndex(index);
     setStoryViewerOpen(true);
+  };
+
+  const handleOpenQibla = () => {
+    setViewMode('qibla');
+    window.location.hash = '#qibla';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Live clock updating every second
@@ -64,15 +72,19 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
-  // Support URL hash routing for modals
+  // Support URL hash routing for modals and full-page views
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.toLowerCase();
+      if (hash === '#qibla') {
+        setViewMode('qibla');
+      } else {
+        setViewMode('home');
+      }
       if (hash === '#timetable' || hash === '#calendar') setTimetableModalOpen(true);
       if (hash === '#admin' || hash === '#cms') setAdminModalOpen(true);
       if (hash === '#tv') setTvModalOpen(true);
       if (hash === '#donate') setDonationModalOpen(true);
-      if (hash === '#qibla') setQiblaModalOpen(true);
       if (hash === '#quran') setQuranModalOpen(true);
       if (hash === '#story' || hash === '#stories') {
         setActiveStoryIndex(0);
@@ -111,59 +123,65 @@ export default function App() {
         onOpenTimetable={() => setTimetableModalOpen(true)}
         onOpenQuranModal={() => setQuranModalOpen(true)}
         onOpenFloorPlan={() => setFloorPlanModalOpen(true)}
-        onOpenQibla={() => setQiblaModalOpen(true)}
+        onOpenQibla={handleOpenQibla}
         onOpenAdmin={() => setAdminModalOpen(true)}
         onOpenTVSignage={() => setTvModalOpen(true)}
       />
 
-      {/* Main Content Sections */}
-      <main className="flex-1">
-        <Hero 
-          nextPrayer={nextPrayer}
-          onOpenDonate={() => setDonationModalOpen(true)}
-          onOpenTimetable={() => setTimetableModalOpen(true)}
-          onOpenQuranModal={() => setQuranModalOpen(true)}
-          onOpenFloorPlan={() => setFloorPlanModalOpen(true)}
-          onOpenStandingOrder={() => setStandingOrderModalOpen(true)}
-          onOpenQibla={() => setQiblaModalOpen(true)}
-        />
+      {/* Conditional View: Dedicated Qibla Page or Main Content Sections */}
+      {viewMode === 'qibla' ? (
+        <main className="flex-1 pt-16">
+          <QiblaPage onBack={() => { setViewMode('home'); window.location.hash = ''; }} />
+        </main>
+      ) : (
+        <main className="flex-1">
+          <Hero 
+            nextPrayer={nextPrayer}
+            onOpenDonate={() => setDonationModalOpen(true)}
+            onOpenTimetable={() => setTimetableModalOpen(true)}
+            onOpenQuranModal={() => setQuranModalOpen(true)}
+            onOpenFloorPlan={() => setFloorPlanModalOpen(true)}
+            onOpenStandingOrder={() => setStandingOrderModalOpen(true)}
+            onOpenQibla={handleOpenQibla}
+          />
 
-        <PrayerTimesSection 
-          prayerData={prayerData}
-          nextPrayer={nextPrayer}
-          asrHanafi={asrHanafi}
-          setAsrHanafi={setAsrHanafi}
-          onOpenTimetable={() => setTimetableModalOpen(true)}
-          onOpenQibla={() => setQiblaModalOpen(true)}
-        />
+          <PrayerTimesSection 
+            prayerData={prayerData}
+            nextPrayer={nextPrayer}
+            asrHanafi={asrHanafi}
+            setAsrHanafi={setAsrHanafi}
+            onOpenTimetable={() => setTimetableModalOpen(true)}
+            onOpenQibla={handleOpenQibla}
+          />
 
-        <SpitfireLocationSection />
+          <SpitfireLocationSection />
 
-        <CommunityStoriesSection 
-          onOpenStory={handleOpenStory}
-          onOpenDonation={() => setDonationModalOpen(true)}
-          onOpenStandingOrder={() => setStandingOrderModalOpen(true)}
-        />
+          <CommunityStoriesSection 
+            onOpenStory={handleOpenStory}
+            onOpenDonation={() => setDonationModalOpen(true)}
+            onOpenStandingOrder={() => setStandingOrderModalOpen(true)}
+          />
 
-        <DonationSection 
-          onOpenFloorPlan={() => setFloorPlanModalOpen(true)}
-          onOpenStandingOrder={() => setStandingOrderModalOpen(true)}
-        />
+          <DonationSection 
+            onOpenFloorPlan={() => setFloorPlanModalOpen(true)}
+            onOpenStandingOrder={() => setStandingOrderModalOpen(true)}
+          />
 
-        <QuranClassesSection 
-          onOpenQuranModal={() => setQuranModalOpen(true)}
-        />
+          <QuranClassesSection 
+            onOpenQuranModal={() => setQuranModalOpen(true)}
+          />
 
-        <PillarsSection 
-          onOpenVolunteerModal={() => setVolunteerModalOpen(true)}
-        />
+          <PillarsSection 
+            onOpenVolunteerModal={() => setVolunteerModalOpen(true)}
+          />
 
-        <CharityWorkSection 
-          onOpenDonate={() => setDonationModalOpen(true)}
-        />
+          <CharityWorkSection 
+            onOpenDonate={() => setDonationModalOpen(true)}
+          />
 
-        <ValuesSection />
-      </main>
+          <ValuesSection />
+        </main>
+      )}
 
       {/* Footer */}
       <Footer 

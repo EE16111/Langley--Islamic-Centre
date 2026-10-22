@@ -3,7 +3,7 @@ import { LIC_DATA } from '../data/content';
 import { 
   Clock, 
   Calendar, 
-  Sparkles, 
+  Users, 
   ChevronRight, 
   Sun, 
   Sunset, 
@@ -141,7 +141,7 @@ export default function PrayerTimesSection({
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
             <div className="flex items-start gap-4">
               <div className="w-14 h-14 rounded-2xl bg-[#c5a059]/15 border border-[#c5a059]/40 flex items-center justify-center flex-shrink-0 text-[#dfb76c] shadow-[0_0_20px_rgba(197,160,89,0.2)]">
-                <Sparkles className="w-7 h-7" />
+                <Users className="w-7 h-7" />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">

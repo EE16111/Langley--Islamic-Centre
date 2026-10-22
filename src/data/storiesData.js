@@ -1,13 +1,13 @@
-import { tournamentPhotos } from './tournamentPhotos';
+import { tournamentPitchPhotos, managementTourPhotos } from './tournamentPhotos';
 
 export const storiesData = [
   {
     id: 'football-cup',
-    title: 'Charity Cup 2026',
+    title: 'Charity Football Cup',
     subtitle: 'Sponsored by Biryaniwala',
     category: 'Youth & Sports',
-    badge: '🏆 RECAP',
-    coverImage: tournamentPhotos[25]?.src || tournamentPhotos[0]?.src, // trophy or kickoff
+    badge: '🏆 MATCHDAY',
+    coverImage: tournamentPitchPhotos[0]?.src || '/src/assets/stories/football-cup/cup-01.jpg',
     icon: 'Trophy',
     accentColor: 'from-amber-500 to-emerald-600',
     duration: 6000,
@@ -15,60 +15,60 @@ export const storiesData = [
       {
         id: 'cup-slide-1',
         type: 'photo',
-        image: tournamentPhotos[0]?.src,
-        tagline: 'Grassroots Energy • One Community',
-        title: 'The Annual Charity Football Cup 2026',
-        description: 'Over 16 youth and adult teams from Langley, Slough, and Berkshire clashed in a spirited day of brotherhood, sportsmanship, and charity fundraising.',
+        image: tournamentPitchPhotos[0]?.src, // Slough Town FC pitch with medals
+        tagline: 'Annual Charity Football Cup',
+        title: 'Grassroots Tournament on the Pitch',
+        description: 'Community football tournament held on the Slough Town FC grounds, uniting local youth and adult teams in sportsmanship and fundraising for Langley Islamic Centre.',
         stats: [
-          { label: 'Teams', value: '16+' },
-          { label: 'Funds Raised', value: '£4,250+' },
-          { label: 'Players', value: '120+' }
+          { label: 'Ground', value: 'Slough Town' },
+          { label: 'Beneficiary', value: 'LIC Waqf' },
+          { label: 'Teams', value: '16 Teams' }
         ]
       },
       {
         id: 'cup-slide-2',
         type: 'photo',
-        image: tournamentPhotos[4]?.src || tournamentPhotos[1]?.src,
-        tagline: 'High Octane Action',
-        title: 'Passion, Grit & Brotherhood',
-        description: 'Every tackle, pass, and goal carried a shared purpose: securing our future permanent Islamic Centre and youth hub at Spitfire Close.',
+        image: tournamentPitchPhotos[1]?.src, // Red team on pitch
+        tagline: 'Matchday Action',
+        title: 'Team Spirit & Healthy Competition',
+        description: 'Players competing on the grass pitch with full energy, bringing the local community together through sport and community fundraising.',
         stats: [
-          { label: 'Goals Scored', value: '48' },
-          { label: 'Matches', value: '28' }
+          { label: 'Format', value: 'Grassroots' },
+          { label: 'Atmosphere', value: 'Brotherhood' }
         ]
       },
       {
         id: 'cup-slide-3',
         type: 'sponsor',
-        image: tournamentPhotos[8]?.src || tournamentPhotos[2]?.src,
-        tagline: 'Official Tournament Sponsor',
-        title: 'Powered & Fed by Biryaniwala',
+        image: tournamentPitchPhotos[7]?.src || tournamentPitchPhotos[0]?.src, // cup-20: Biryaniwala banner!
+        tagline: 'Title Sponsor',
+        title: 'Sponsored & Fed by Biryaniwala',
         sponsorName: 'Biryaniwala',
-        sponsorAddress: '308 High Street, Slough, SL1 1NB',
-        sponsorCuisine: 'Authentic Hyderabadi & Subcontinental Specialties',
-        description: 'A massive community thank you to our title sponsor, Biryaniwala. Their generous sponsorship and delicious hot food fueled every athlete and volunteer on the pitch.',
-        sponsorBadge: 'Official Platinum Partner',
+        sponsorAddress: '308 High Street, Slough, Berkshire, SL1 1NB',
+        sponsorCuisine: 'Authentic Hyderabadi Biryani & Specialties',
+        description: 'Special thanks to Biryaniwala (308 High Street, Slough) for providing hot food catering and headline sponsorship for this community sports event.',
+        sponsorBadge: 'Official Tournament Sponsor',
         sponsorLink: 'https://www.google.com/maps/search/?api=1&query=Biryaniwala+308+High+Street+Slough'
       },
       {
         id: 'cup-slide-4',
         type: 'photo',
-        image: tournamentPhotos[23]?.src || tournamentPhotos[3]?.src,
-        tagline: 'Champions of Langley',
-        title: 'Trophy Presentation & Honors',
-        description: 'Congratulations to our tournament winners and every player who stepped onto the pitch. Medals, trophies, and unforgettable memories made.',
+        image: tournamentPitchPhotos[11]?.src || tournamentPitchPhotos[0]?.src, // cup-26: Trophy ceremony
+        tagline: 'Awards Presentation',
+        title: 'Trophy Ceremony & Medals',
+        description: 'Presentation of trophies and medals celebrating the effort, teamwork, and generosity of all participants.',
         stats: [
-          { label: 'Champions', value: 'Slough Stars FC' },
-          { label: 'Fair Play Award', value: 'Langley Youth' }
+          { label: 'Trophies', value: 'Champions' },
+          { label: 'Medals', value: 'All Teams' }
         ]
       },
       {
         id: 'cup-slide-5',
         type: 'action',
-        image: tournamentPhotos[25]?.src || tournamentPhotos[5]?.src,
-        tagline: 'The Mission Continues',
-        title: '100% of Proceeds to LIC Spitfire Close Waqf',
-        description: 'Every penny raised goes directly to our registered charity (CIO #1180443) building project. Join the movement and help build our permanent sanctuary.',
+        image: tournamentPitchPhotos[2]?.src || tournamentPitchPhotos[0]?.src, // cup-04 aerial pitch
+        tagline: 'Proceeds to Waqf Fund',
+        title: '100% of Tournament Donations Support Spitfire Close',
+        description: 'All funds collected at the tournament go directly towards the acquisition and purchase of our permanent Islamic Centre at Spitfire Close (CIO #1180443).',
         ctaText: 'Donate to Waqf Project',
         ctaAction: 'donate'
       }
@@ -76,11 +76,11 @@ export const storiesData = [
   },
   {
     id: 'biryaniwala-spotlight',
-    title: 'Sponsor Spotlight',
-    subtitle: 'Biryaniwala Slough',
-    category: 'Community Partner',
-    badge: '🍛 PARTNER',
-    coverImage: tournamentPhotos[12]?.src || tournamentPhotos[2]?.src,
+    title: 'Sponsor: Biryaniwala',
+    subtitle: '308 High Street, Slough',
+    category: 'Local Business Partner',
+    badge: '🍛 SPONSOR',
+    coverImage: tournamentPitchPhotos[7]?.src || tournamentPitchPhotos[0]?.src, // cup-20 banner
     icon: 'UtensilsCrossed',
     accentColor: 'from-amber-400 to-orange-600',
     duration: 6000,
@@ -88,24 +88,23 @@ export const storiesData = [
       {
         id: 'biryani-slide-1',
         type: 'sponsor-card',
-        image: tournamentPhotos[12]?.src || tournamentPhotos[6]?.src,
-        tagline: 'Local Business With A Big Heart',
-        title: 'Biryaniwala: Backing Our Community',
-        sponsorName: 'Biryaniwala Slough',
+        image: tournamentPitchPhotos[7]?.src || tournamentPitchPhotos[0]?.src,
+        tagline: 'Official Event Sponsor',
+        title: 'Biryaniwala (Slough)',
+        sponsorName: 'Biryaniwala',
         sponsorAddress: '308 High Street, Slough, Berkshire, SL1 1NB',
-        description: 'Biryaniwala stepped up as the headline sponsor for our youth football tournament, providing vital financial sponsorship and catering hot gourmet meals for our youth.',
-        quote: '“Supporting the youth, empowering healthy sport, and strengthening the house of Allah in Langley is an honour for our business.”',
-        actionLabel: 'Get Directions / Visit',
+        description: 'Biryaniwala generously sponsored the tournament catering, supplying fresh hot biryani and support for the athletes and volunteers throughout the day.',
+        actionLabel: 'View on Google Maps',
         actionUrl: 'https://www.google.com/maps/search/?api=1&query=Biryaniwala+308+High+Street+Slough'
       },
       {
         id: 'biryani-slide-2',
         type: 'partner-call',
-        image: tournamentPhotos[16]?.src || tournamentPhotos[7]?.src,
-        tagline: 'Become a Community Sponsor',
-        title: 'Partner Your Business With LIC',
-        description: 'Are you a local business in Langley, Slough, Windsor, or Heathrow? Sponsoring LIC events and educational initiatives places your brand in front of thousands of families while supporting a registered UK charity (#1180443).',
-        ctaText: 'Partner With Us',
+        image: tournamentPitchPhotos[1]?.src,
+        tagline: 'Local Business Partnerships',
+        title: 'Support Businesses That Support Our Youth',
+        description: 'We encourage the community to patronise local businesses like Biryaniwala who actively support youth development and charitable work in Slough and Langley.',
+        ctaText: 'Contact Management for Sponsorship',
         ctaAction: 'contact'
       }
     ]
@@ -113,10 +112,10 @@ export const storiesData = [
   {
     id: 'management-on-tour',
     title: 'Management on Tour',
-    subtitle: 'UK Waqf Fundraising Drive',
-    category: 'Outreach & Missions',
-    badge: '🕌 ON TOUR',
-    coverImage: tournamentPhotos[20]?.src || tournamentPhotos[8]?.src,
+    subtitle: '£550k Building Campaign',
+    category: 'Fundraising Missions',
+    badge: '🕌 APPEALS',
+    coverImage: managementTourPhotos[3]?.src || '/src/assets/stories/football-cup/cup-07.jpg', // cup-07 banner
     icon: 'MapPin',
     accentColor: 'from-emerald-400 to-teal-600',
     duration: 6000,
@@ -124,37 +123,35 @@ export const storiesData = [
       {
         id: 'tour-slide-1',
         type: 'info',
-        image: tournamentPhotos[20]?.src || tournamentPhotos[10]?.src,
-        tagline: 'Spreading The Word Across The UK',
-        title: 'Rallying The Ummah for Spitfire Close',
-        description: 'The Langley Islamic Centre management and trustees frequently travel to partner mosques, community halls, and charity galas nationwide to raise funds for our permanent premises in Langley.',
+        image: managementTourPhotos[3]?.src, // cup-07: £550k banner with management
+        tagline: 'Fundraising Across the UK',
+        title: 'Management & Volunteer Delegations',
+        description: 'Langley Islamic Centre trustees and volunteers frequently visit partner mosques, Friday congregations, and charity events to raise the £550,000 required for our permanent Spitfire Close building.',
         stats: [
-          { label: 'Cities Visited', value: '8+' },
-          { label: 'Mosques Partnered', value: '25+' },
-          { label: 'Status', value: 'CIO #1180443' }
+          { label: 'Target', value: '£550,000' },
+          { label: 'Status', value: 'CIO #1180443' },
+          { label: 'Location', value: 'Spitfire Close' }
         ]
       },
       {
         id: 'tour-slide-2',
-        type: 'timeline',
-        image: tournamentPhotos[28]?.src || tournamentPhotos[14]?.src,
-        tagline: 'Recent Appeal Stops',
-        title: 'From Slough to London & The Midlands',
-        stops: [
-          { city: 'London & Heathrow Hubs', note: 'Friday Khutbah & Waqf Appeals' },
-          { city: 'Birmingham & Midlands', note: 'Community Charity Dinners' },
-          { city: 'Luton & Bedfordshire', note: 'Madrasah & Youth Sports Exchange' },
-          { city: 'Slough & Langley', note: 'Local Business Partner Galas' }
-        ],
-        description: 'Every visit builds lifelong bridges of brotherhood and draws us closer to opening the doors of the full Spitfire Close complex.'
+        type: 'photo',
+        image: managementTourPhotos[4]?.src, // cup-08: Volunteer with orange charity bucket
+        tagline: 'Community Collections',
+        title: 'Street & Mosque Collections',
+        description: 'Dedicated volunteers on the ground with official charity collection buckets, collecting donations from brothers and sisters across London, Berkshire, and partner masajid.',
+        stats: [
+          { label: 'Policy', value: '100% Donation' },
+          { label: 'Governance', value: 'UK Charity Comm' }
+        ]
       },
       {
         id: 'tour-slide-3',
         type: 'charity-transparency',
-        image: tournamentPhotos[26]?.src || tournamentPhotos[18]?.src,
-        tagline: '100% Financial Accountability',
-        title: 'Charity Commission Verified (1180443)',
-        description: 'Langley Islamic Centre is an officially registered Charitable Incorporated Organisation (CIO) in England and Wales. All donations are accounted for with full governance and transparency.',
+        image: managementTourPhotos[18]?.src, // cup-32: Official Charity Commission banner
+        tagline: 'Official Charity Banking Details',
+        title: 'HSBC Bank Account: Langley Islamic Centre',
+        description: 'Registered Charitable Incorporated Organisation (CIO #1180443). Bank: HSBC | Sort Code: 40-42-08 | Account: 02494973 | Phone: 078 4373 2106.',
         charityNumber: '1180443',
         charityUrl: 'https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/5128534/contact-information',
         facebookUrl: 'https://www.facebook.com/LangleyIslamicCentre/?locale=en_GB'
@@ -163,9 +160,9 @@ export const storiesData = [
   },
   {
     id: 'spitfire-vision',
-    title: 'The Permanent Home',
-    subtitle: 'Spitfire Close Hub',
-    category: 'Future Sanctuary',
+    title: 'Unit 2 Spitfire Close',
+    subtitle: 'Permanent Waqf Sanctuary',
+    category: 'Building Project',
     badge: '🏛️ WAQF',
     coverImage: '/src/assets/LIC-OutSide-1024x771.jpg',
     icon: 'Building2',
@@ -176,22 +173,22 @@ export const storiesData = [
         id: 'spitfire-slide-1',
         type: 'info',
         image: '/src/assets/LIC-OutSide-1024x771.jpg',
-        tagline: 'A Multi-Generational Legacy',
-        title: 'Spitfire Close, Langley, Slough SL3 8GY',
-        description: 'A purpose-designed sanctuary featuring 5-daily prayer facilities, sister suites, youth recreational zones, and classrooms for Quranic recitation and memorisation.',
+        tagline: 'Permanent Premises',
+        title: 'Unit 2, Spitfire Close, Langley, SL3 8GY',
+        description: 'Facilities for 5 daily prayers, Jumuah, youth education, Quran classes, and community support in Langley.',
         stats: [
-          { label: 'Capacity', value: '600+ Worshippers' },
-          { label: 'Location', value: 'Spitfire Close' },
-          { label: 'Postcode', value: 'SL3 8GY' }
+          { label: 'Premises', value: 'Spitfire Close' },
+          { label: 'Postcode', value: 'SL3 8GY' },
+          { label: 'Target', value: '£550,000' }
         ]
       },
       {
         id: 'spitfire-slide-2',
         type: 'action',
         image: '/src/assets/SpitFireSlider.jpg',
-        tagline: 'Leave Your Sadaqah Jariyah',
-        title: 'Be A Foundation Builder Today',
-        description: '“Whoever builds a mosque for Allah, Allah will build for him a house in Paradise.” Join hundreds of families contributing to the Waqf fund.',
+        tagline: 'Standing Order Mandate',
+        title: 'Help Make Our Masjid Debt-Free',
+        description: 'Set up a regular monthly standing order directly to our HSBC charity account to support ongoing building acquisition.',
         ctaText: 'Set Up Standing Order',
         ctaAction: 'standingOrder'
       }
@@ -201,16 +198,15 @@ export const storiesData = [
 
 export const sponsorDetails = {
   name: 'Biryaniwala',
-  fullName: 'Biryaniwala Slough (Official Event Sponsor)',
-  tagline: 'Authentic Hyderabadi & Subcontinental Cuisine',
+  fullName: 'Biryaniwala Slough',
+  tagline: 'Authentic Hyderabadi Biryani & Takeaway',
   address: '308 High Street, Slough, Berkshire, SL1 1NB',
-  role: 'Official Title Sponsor • Langley Islamic Centre Charity Football Cup 2026',
-  badge: 'Official Community Partner',
+  role: 'Official Title Sponsor • Charity Football Cup',
+  badge: 'Official Sponsor',
   highlights: [
-    'Title sponsor for youth & adult grassroots football tournament',
-    'Provided catering & hot food for players, referees & volunteers',
-    'Proud local Langley & Slough business actively investing in youth'
+    'Sponsored tournament catering and hot meals for players and volunteers',
+    'Local Slough independent restaurant supporting grassroots youth sports',
+    'Specialises in authentic Hyderabadi Dum Biryani and catering for community events'
   ],
-  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Biryaniwala+308+High+Street+Slough',
-  menuHighlights: ['Hyderabadi Dum Biryani', 'Chicken 65', 'Seekh Kebabs', 'Special Catering for Community & Charity Events']
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Biryaniwala+308+High+Street+Slough'
 };

@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
 import { 
   Trophy, 
-  Sparkles, 
   Play, 
   MapPin, 
   UtensilsCrossed, 
   ExternalLink, 
-  HeartHandshake, 
   ShieldCheck, 
   Camera, 
   ChevronRight,
   Flame,
-  Award,
-  Users,
-  Compass,
-  ArrowUpRight
+  ArrowUpRight,
+  Building2,
+  Users
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { storiesData, sponsorDetails } from '../data/storiesData';
-import { tournamentPhotos } from '../data/tournamentPhotos';
+import { tournamentPitchPhotos, managementTourPhotos } from '../data/tournamentPhotos';
 
 export default function CommunityStoriesSection({ 
   onOpenStory, 
@@ -27,56 +24,44 @@ export default function CommunityStoriesSection({
 }) {
   const { theme } = useTheme();
   const isLight = theme === 'light';
-  const isAmbient = theme === 'ambient';
 
-  const [activePhotoCategory, setActivePhotoCategory] = useState('all');
+  const [activeTab, setActiveTab] = useState('tournament'); // 'tournament' | 'fundraising'
   const [lightboxPhoto, setLightboxPhoto] = useState(null);
-  const [showAllPhotos, setShowAllPhotos] = useState(false);
+  const [showAllPitch, setShowAllPitch] = useState(false);
+  const [showAllTour, setShowAllTour] = useState(false);
 
-  // Filter photos
-  const filteredPhotos = tournamentPhotos.filter(photo => {
-    if (activePhotoCategory === 'all') return true;
-    if (activePhotoCategory === 'trophy') return photo.tag.includes('Trophy') || photo.tag.includes('Lineup');
-    return photo.tag.includes('Action') || photo.tag.includes('Kickoff');
-  });
-
-  const displayedPhotos = showAllPhotos ? filteredPhotos : filteredPhotos.slice(0, 8);
+  const displayedPitchPhotos = showAllPitch ? tournamentPitchPhotos : tournamentPitchPhotos.slice(0, 8);
+  const displayedTourPhotos = showAllTour ? managementTourPhotos : managementTourPhotos.slice(0, 8);
 
   return (
     <section id="stories" className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Dynamic Background Elements */}
-      <div className="absolute inset-0 pointer-events-none opacity-20">
-        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-emerald-500/30 blur-3xl" />
-        <div className="absolute top-1/2 -right-40 w-96 h-96 rounded-full bg-amber-500/25 blur-3xl" />
-      </div>
-
       <div className="relative max-w-7xl mx-auto">
+        
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border transition-all shadow-sm bg-amber-500/10 text-amber-500 border-amber-500/30">
-            <Sparkles className="w-3.5 h-3.5" />
-            Live Chronicles & Impact Dispatches
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border bg-amber-500/10 text-amber-500 border-amber-500/30">
+            Community Updates & Reports
           </div>
           <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 ${
             isLight ? 'text-neutral-900' : 'text-white'
           }`}>
-            Faith in Motion. <span className="bg-gradient-to-r from-amber-400 via-amber-200 to-emerald-400 bg-clip-text text-transparent">Community on the Pitch.</span>
+            Community in Action. <span className="bg-gradient-to-r from-amber-400 via-amber-200 to-emerald-400 bg-clip-text text-transparent">On the Pitch & on the Road.</span>
           </h2>
           <p className={`text-base sm:text-lg leading-relaxed ${
             isLight ? 'text-neutral-600' : 'text-neutral-300'
           }`}>
-            From youth football cups powered by local champions to our nationwide management fundraising drives — explore interactive dispatches from the front lines of our community.
+            Official chronicles of the Langley Islamic Centre Charity Football Cup and our management's nationwide fundraising appeals for Unit 2, Spitfire Close.
           </p>
         </div>
 
-        {/* 1. Tappable Interactive Stories Ring Bar (Instagram / Revolut Mobile-First Style) */}
-        <div className="mb-14">
-          <div className="flex items-center justify-between mb-4 px-2">
+        {/* 1. Tappable Stories Ring Bar */}
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-3 px-2">
             <span className="text-xs font-bold uppercase tracking-wider text-amber-400/90 flex items-center gap-1.5">
               <Flame className="w-4 h-4 text-amber-500" />
-              Tap to Watch Stories
+              Tap to View Story Reports
             </span>
-            <span className="text-xs text-neutral-400">Auto-advancing 2026 dispatches</span>
+            <span className="text-xs text-neutral-400">Interactive Visual Updates</span>
           </div>
 
           <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto pb-4 pt-1 no-scrollbar scroll-smooth">
@@ -87,7 +72,6 @@ export default function CommunityStoriesSection({
                 className="group flex-shrink-0 flex flex-col items-center focus:outline-none transition-transform active:scale-95 text-center"
                 aria-label={`Open story: ${story.title}`}
               >
-                {/* Glowing Avatar Ring */}
                 <div className="relative p-1 rounded-full bg-gradient-to-tr from-amber-400 via-emerald-400 to-amber-200 shadow-lg shadow-amber-500/20 group-hover:shadow-amber-500/40 group-hover:scale-105 transition-all duration-300">
                   <div className={`p-0.5 rounded-full ${isLight ? 'bg-white' : 'bg-neutral-950'}`}>
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden relative">
@@ -102,13 +86,11 @@ export default function CommunityStoriesSection({
                     </div>
                   </div>
 
-                  {/* Badge */}
                   <span className="absolute -bottom-1 inset-x-0 mx-auto w-max px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-500 text-neutral-950 shadow-md">
                     {story.badge}
                   </span>
                 </div>
 
-                {/* Title */}
                 <span className={`text-xs font-bold mt-2.5 max-w-[84px] sm:max-w-[100px] truncate ${
                   isLight ? 'text-neutral-900' : 'text-white'
                 }`}>
@@ -122,339 +104,388 @@ export default function CommunityStoriesSection({
           </div>
         </div>
 
-        {/* 2. Bold Bento Grid Chronicles */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-16">
-          {/* Bento Card 1: Featured Football Tournament (7 cols) */}
-          <div className={`lg:col-span-7 rounded-3xl p-6 sm:p-8 border relative overflow-hidden flex flex-col justify-between shadow-2xl transition-all duration-300 group ${
-            isLight 
-              ? 'bg-gradient-to-br from-white via-amber-50/30 to-emerald-50/20 border-amber-200/60' 
-              : 'bg-gradient-to-br from-neutral-900/90 via-neutral-900/70 to-emerald-950/30 border-white/10'
-          }`}>
-            {/* Background Texture Photo */}
-            <div className="absolute inset-0 opacity-15 group-hover:opacity-25 transition-opacity duration-700 pointer-events-none">
-              <img 
-                src={tournamentPhotos[25]?.src || tournamentPhotos[0]?.src} 
-                alt="Tournament crowd" 
-                className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-700"
-              />
-            </div>
+        {/* Section Navigation Tabs: Ground vs Indoor Tours */}
+        <div className="flex items-center justify-center gap-3 mb-10">
+          <button
+            onClick={() => setActiveTab('tournament')}
+            className={`px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all ${
+              activeTab === 'tournament'
+                ? 'bg-amber-500 text-neutral-950 shadow-lg shadow-amber-500/20 scale-105'
+                : isLight
+                  ? 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-200'
+                  : 'bg-white/5 text-neutral-300 hover:bg-white/10 border border-white/10'
+            }`}
+          >
+            <Trophy className="w-4 h-4" />
+            <span>Football Tournament (On the Pitch)</span>
+            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/20 font-mono">
+              {tournamentPitchPhotos.length}
+            </span>
+          </button>
 
-            <div className="relative z-10">
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                  <Trophy className="w-3.5 h-3.5" />
-                  Annual Charity Football Cup
-                </span>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                  Sponsored by Biryaniwala
-                </span>
-              </div>
+          <button
+            onClick={() => setActiveTab('fundraising')}
+            className={`px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all ${
+              activeTab === 'fundraising'
+                ? 'bg-emerald-500 text-neutral-950 shadow-lg shadow-emerald-500/20 scale-105'
+                : isLight
+                  ? 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-200'
+                  : 'bg-white/5 text-neutral-300 hover:bg-white/10 border border-white/10'
+            }`}
+          >
+            <Building2 className="w-4 h-4" />
+            <span>Management Fundraising Drives (£550k Appeal)</span>
+            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/20 font-mono">
+              {managementTourPhotos.length}
+            </span>
+          </button>
+        </div>
 
-              <h3 className={`text-2xl sm:text-3xl font-extrabold mb-3 leading-tight ${
-                isLight ? 'text-neutral-900' : 'text-white'
+        {/* TAB 1: Football Tournament (Ground & Sports Only) */}
+        {activeTab === 'tournament' && (
+          <div className="space-y-8 animate-in fade-in duration-300">
+            {/* Bento Cards: Tournament Overview & Biryaniwala Sponsor */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* Tournament Matchday Card */}
+              <div className={`lg:col-span-7 rounded-3xl p-6 sm:p-8 border relative overflow-hidden flex flex-col justify-between shadow-xl ${
+                isLight 
+                  ? 'bg-gradient-to-br from-white via-amber-50/40 to-neutral-50 border-amber-200/60' 
+                  : 'bg-gradient-to-br from-neutral-900/90 via-neutral-900/70 to-emerald-950/20 border-white/10'
               }`}>
-                Community, Passion & Youth Empowerment on the Pitch
-              </h3>
-
-              <p className={`text-sm sm:text-base leading-relaxed mb-6 max-w-xl ${
-                isLight ? 'text-neutral-600' : 'text-neutral-300'
-              }`}>
-                Organized by the management of Langley Islamic Centre, the Charity Football Cup brought together over 16 youth and adult teams from across Slough and Berkshire. 100% of fundraising proceeds support our permanent centre at Spitfire Close.
-              </p>
-
-              {/* Tournament Metric Chips */}
-              <div className="grid grid-cols-3 gap-3 mb-6">
-                <div className={`p-3 rounded-2xl border text-center ${
-                  isLight ? 'bg-white/80 border-amber-200' : 'bg-black/40 border-white/10'
-                }`}>
-                  <div className="text-xl sm:text-2xl font-black text-amber-400 leading-none">16+</div>
-                  <div className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400 mt-1">Teams</div>
-                </div>
-                <div className={`p-3 rounded-2xl border text-center ${
-                  isLight ? 'bg-white/80 border-amber-200' : 'bg-black/40 border-white/10'
-                }`}>
-                  <div className="text-xl sm:text-2xl font-black text-emerald-400 leading-none">£4,250+</div>
-                  <div className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400 mt-1">Raised</div>
-                </div>
-                <div className={`p-3 rounded-2xl border text-center ${
-                  isLight ? 'bg-white/80 border-amber-200' : 'bg-black/40 border-white/10'
-                }`}>
-                  <div className="text-xl sm:text-2xl font-black text-amber-300 leading-none">120+</div>
-                  <div className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400 mt-1">Players</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="relative z-10 flex flex-wrap items-center gap-3 pt-2">
-              <button
-                onClick={() => onOpenStory(0)}
-                className="py-3 px-5 rounded-2xl font-bold text-sm bg-gradient-to-r from-amber-400 to-emerald-400 text-neutral-950 shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-95 transition-all flex items-center gap-2"
-              >
-                <Play className="w-4 h-4 fill-current" />
-                Launch Interactive Story
-              </button>
-              <button
-                onClick={() => setShowAllPhotos(prev => !prev)}
-                className={`py-3 px-4 rounded-2xl font-semibold text-sm border transition-all flex items-center gap-2 ${
-                  isLight 
-                    ? 'bg-white hover:bg-neutral-50 text-neutral-800 border-neutral-300' 
-                    : 'bg-white/5 hover:bg-white/10 text-white border-white/15'
-                }`}
-              >
-                <Camera className="w-4 h-4 text-amber-400" />
-                {showAllPhotos ? 'Collapse Gallery' : 'View All 32 Photos'}
-              </button>
-            </div>
-          </div>
-
-          {/* Bento Card 2: Biryaniwala Sponsor Spotlight (5 cols) */}
-          <div className={`lg:col-span-5 rounded-3xl p-6 sm:p-8 border relative overflow-hidden flex flex-col justify-between shadow-2xl transition-all duration-300 ${
-            isLight 
-              ? 'bg-gradient-to-br from-amber-50 via-white to-amber-100/40 border-amber-300/70' 
-              : 'bg-gradient-to-br from-amber-950/40 via-neutral-900 to-neutral-950 border-amber-500/30'
-          }`}>
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500 text-neutral-950 shadow-sm">
-                  <UtensilsCrossed className="w-3.5 h-3.5" />
-                  Official Title Sponsor
-                </span>
-                <span className="text-xs text-amber-400 font-semibold">Community Hero</span>
-              </div>
-
-              <div className="flex items-start gap-3.5 mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 flex-shrink-0 shadow-inner">
-                  <UtensilsCrossed className="w-6 h-6" />
-                </div>
                 <div>
-                  <h3 className={`text-2xl font-black tracking-tight ${isLight ? 'text-neutral-900' : 'text-white'}`}>
-                    {sponsorDetails.name}
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      <Trophy className="w-3.5 h-3.5" />
+                      Charity Football Cup
+                    </span>
+                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                      Sponsored by Biryaniwala
+                    </span>
+                  </div>
+
+                  <h3 className={`text-2xl sm:text-3xl font-extrabold mb-3 leading-tight ${
+                    isLight ? 'text-neutral-900' : 'text-white'
+                  }`}>
+                    Grassroots Youth & Community Tournament
                   </h3>
-                  <p className="text-xs text-amber-400 font-medium flex items-center gap-1 mt-0.5">
-                    <MapPin className="w-3.5 h-3.5" />
-                    {sponsorDetails.address}
+
+                  <p className={`text-sm sm:text-base leading-relaxed mb-6 ${
+                    isLight ? 'text-neutral-600' : 'text-neutral-300'
+                  }`}>
+                    Organized by Langley Islamic Centre management on the Slough Town FC grounds. Local youth and adult squads competed in the spirit of sportsmanship, with all proceeds directly backing our permanent Waqf centre.
                   </p>
+
+                  <div className="grid grid-cols-3 gap-3 mb-6">
+                    <div className={`p-3 rounded-2xl border text-center ${
+                      isLight ? 'bg-white border-amber-200' : 'bg-black/40 border-white/10'
+                    }`}>
+                      <div className="text-xl font-black text-amber-400">Slough Town</div>
+                      <div className="text-[10px] font-semibold uppercase text-neutral-400 mt-1">Ground</div>
+                    </div>
+                    <div className={`p-3 rounded-2xl border text-center ${
+                      isLight ? 'bg-white border-amber-200' : 'bg-black/40 border-white/10'
+                    }`}>
+                      <div className="text-xl font-black text-emerald-400">100%</div>
+                      <div className="text-[10px] font-semibold uppercase text-neutral-400 mt-1">To Waqf Fund</div>
+                    </div>
+                    <div className={`p-3 rounded-2xl border text-center ${
+                      isLight ? 'bg-white border-amber-200' : 'bg-black/40 border-white/10'
+                    }`}>
+                      <div className="text-xl font-black text-amber-300">16 Teams</div>
+                      <div className="text-[10px] font-semibold uppercase text-neutral-400 mt-1">Participated</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    onClick={() => onOpenStory(0)}
+                    className="py-3 px-5 rounded-2xl font-bold text-sm bg-gradient-to-r from-amber-400 to-emerald-400 text-neutral-950 shadow-md hover:brightness-110 active:scale-95 transition-all flex items-center gap-2"
+                  >
+                    <Play className="w-4 h-4 fill-current" />
+                    Watch Matchday Story
+                  </button>
+                  <button
+                    onClick={() => setShowAllPitch(prev => !prev)}
+                    className={`py-3 px-4 rounded-2xl font-semibold text-sm border transition-all flex items-center gap-2 ${
+                      isLight 
+                        ? 'bg-white hover:bg-neutral-50 text-neutral-800 border-neutral-300' 
+                        : 'bg-white/5 hover:bg-white/10 text-white border-white/15'
+                    }`}
+                  >
+                    <Camera className="w-4 h-4 text-amber-400" />
+                    {showAllPitch ? 'Show Fewer Photos' : `View All (${tournamentPitchPhotos.length}) Pitch Photos`}
+                  </button>
                 </div>
               </div>
 
-              <p className={`text-sm leading-relaxed mb-4 ${isLight ? 'text-neutral-700' : 'text-neutral-300'}`}>
-                A heartfelt tribute to <strong>Biryaniwala Slough</strong> for providing crucial financial sponsorship and delicious catering for our players, referees, and youth supporters.
-              </p>
+              {/* Biryaniwala Sponsor Pavilion */}
+              <div className={`lg:col-span-5 rounded-3xl p-6 sm:p-8 border relative overflow-hidden flex flex-col justify-between shadow-xl ${
+                isLight 
+                  ? 'bg-gradient-to-br from-amber-50 via-white to-amber-100/30 border-amber-300/70' 
+                  : 'bg-gradient-to-br from-amber-950/40 via-neutral-900 to-neutral-950 border-amber-500/30'
+              }`}>
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500 text-neutral-950">
+                      <UtensilsCrossed className="w-3.5 h-3.5" />
+                      Official Event Sponsor
+                    </span>
+                    <span className="text-xs text-amber-400 font-semibold">Local Business</span>
+                  </div>
 
-              {/* Sponsor Highlights list */}
-              <div className="space-y-2 mb-6">
-                {sponsorDetails.highlights.map((h, i) => (
-                  <div key={i} className="flex items-start gap-2 text-xs">
-                    <span className="text-amber-400 font-bold">•</span>
-                    <span className={isLight ? 'text-neutral-600' : 'text-neutral-400'}>{h}</span>
+                  <div className="flex items-start gap-3.5 mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 flex-shrink-0">
+                      <UtensilsCrossed className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className={`text-2xl font-black tracking-tight ${isLight ? 'text-neutral-900' : 'text-white'}`}>
+                        {sponsorDetails.name}
+                      </h3>
+                      <p className="text-xs text-amber-400 font-medium flex items-center gap-1 mt-0.5">
+                        <MapPin className="w-3.5 h-3.5" />
+                        {sponsorDetails.address}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className={`text-sm leading-relaxed mb-4 ${isLight ? 'text-neutral-700' : 'text-neutral-300'}`}>
+                    We express our sincere appreciation to <strong>Biryaniwala Slough</strong> for providing fresh catering, hot food for participants and volunteers, and essential financial sponsorship for this tournament.
+                  </p>
+
+                  <div className="space-y-2 mb-6">
+                    {sponsorDetails.highlights.map((h, i) => (
+                      <div key={i} className="flex items-start gap-2 text-xs">
+                        <span className="text-amber-400 font-bold">•</span>
+                        <span className={isLight ? 'text-neutral-600' : 'text-neutral-400'}>{h}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <a
+                    href={sponsorDetails.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-amber-500 hover:bg-amber-400 text-neutral-950 transition-all flex items-center justify-center gap-2 shadow-sm"
+                  >
+                    View Biryaniwala on Google Maps <ArrowUpRight className="w-4 h-4" />
+                  </a>
+                  <button
+                    onClick={() => onOpenStory(1)}
+                    className={`w-full py-2 px-4 rounded-xl font-semibold text-xs border transition-all flex items-center justify-center gap-1.5 ${
+                      isLight 
+                        ? 'bg-white hover:bg-neutral-50 text-neutral-800 border-amber-300' 
+                        : 'bg-white/5 hover:bg-white/10 text-white border-white/10'
+                    }`}
+                  >
+                    Watch Biryaniwala Sponsor Story <Play className="w-3 h-3 fill-current" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Pitch Photos Grid (Strictly ground and sports only) */}
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className={`text-lg font-bold flex items-center gap-2 ${isLight ? 'text-neutral-900' : 'text-white'}`}>
+                  <Camera className="w-4 h-4 text-amber-400" />
+                  Football Ground & Matchday Photos ({tournamentPitchPhotos.length})
+                </h4>
+                <span className="text-xs text-neutral-400">Slough Town FC Pitch</span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                {displayedPitchPhotos.map((photo) => (
+                  <div 
+                    key={photo.id}
+                    onClick={() => setLightboxPhoto(photo)}
+                    className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer bg-neutral-900 border border-white/10 shadow hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  >
+                    <img 
+                      src={photo.src} 
+                      alt={photo.alt}
+                      loading="lazy" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+                      <span className="text-[10px] font-bold uppercase text-amber-400">{photo.tag}</span>
+                      <span className="text-xs text-white font-medium truncate">{photo.alt}</span>
+                    </div>
                   </div>
                 ))}
               </div>
-            </div>
 
-            <div className="space-y-2 pt-2">
-              <a
-                href={sponsorDetails.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-amber-500 hover:bg-amber-400 text-neutral-950 transition-all flex items-center justify-center gap-2 shadow-md shadow-amber-500/20"
-              >
-                Visit / Find Biryaniwala on Google Maps <ArrowUpRight className="w-4 h-4" />
-              </a>
-              <button
-                onClick={() => onOpenStory(1)}
-                className={`w-full py-2 px-4 rounded-xl font-semibold text-xs border transition-all flex items-center justify-center gap-1.5 ${
-                  isLight 
-                    ? 'bg-white hover:bg-neutral-50 text-neutral-800 border-amber-300' 
-                    : 'bg-white/5 hover:bg-white/10 text-white border-white/10'
-                }`}
-              >
-                Watch Biryaniwala Tribute Story <Play className="w-3 h-3 fill-current" />
-              </button>
+              {tournamentPitchPhotos.length > 8 && (
+                <div className="text-center mt-6">
+                  <button
+                    onClick={() => setShowAllPitch(prev => !prev)}
+                    className={`py-2 px-5 rounded-full font-bold text-xs uppercase tracking-wider border transition-all inline-flex items-center gap-1.5 ${
+                      isLight 
+                        ? 'bg-white hover:bg-neutral-50 text-neutral-800 border-neutral-300' 
+                        : 'bg-white/10 hover:bg-white/20 text-white border-white/20'
+                    }`}
+                  >
+                    {showAllPitch ? 'Show Less' : `Show All ${tournamentPitchPhotos.length} Pitch Photos`}
+                    <ChevronRight className={`w-3.5 h-3.5 transition-transform ${showAllPitch ? '-rotate-90' : 'rotate-90'}`} />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
+        )}
 
-          {/* Bento Card 3: Management on Tour / Outreach (12 cols) */}
-          <div className={`lg:col-span-12 rounded-3xl p-6 sm:p-8 border relative overflow-hidden shadow-2xl ${
-            isLight 
-              ? 'bg-gradient-to-r from-emerald-50/60 via-white to-amber-50/40 border-emerald-200/70' 
-              : 'bg-gradient-to-r from-emerald-950/30 via-neutral-900 to-neutral-900/90 border-emerald-500/20'
-          }`}>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              <div className="md:col-span-7">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                    <Compass className="w-3.5 h-3.5" />
-                    Management on the Road
-                  </span>
-                  <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
-                    Charity CIO #1180443
-                  </span>
-                </div>
-
-                <h3 className={`text-2xl sm:text-3xl font-extrabold mb-3 leading-tight ${
-                  isLight ? 'text-neutral-900' : 'text-white'
-                }`}>
-                  The Nationwide Waqf Fundraising Tour
-                </h3>
-
-                <p className={`text-sm sm:text-base leading-relaxed mb-4 ${
-                  isLight ? 'text-neutral-600' : 'text-neutral-300'
-                }`}>
-                  Our trustees and management travel across UK cities — visiting Friday congregations, partner masajid, and community charity galas to share the vision of the Spitfire Close Centre.
-                </p>
-
-                {/* Tour stops chips */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {['London & Heathrow', 'Birmingham', 'Luton', 'Bradford', 'Slough & Windsor'].map((city, idx) => (
-                    <span 
-                      key={idx}
-                      className={`text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1.5 ${
-                        isLight 
-                          ? 'bg-emerald-100 text-emerald-900' 
-                          : 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30'
-                      }`}
-                    >
-                      <MapPin className="w-3 h-3 text-emerald-400" />
-                      {city}
+        {/* TAB 2: Management On Tour & Waqf Fundraising Drives (£550k Campaign) */}
+        {activeTab === 'fundraising' && (
+          <div className="space-y-8 animate-in fade-in duration-300">
+            {/* Banner Card: The £550,000 Urgent Building Appeal */}
+            <div className={`rounded-3xl p-6 sm:p-8 border shadow-xl ${
+              isLight 
+                ? 'bg-gradient-to-r from-emerald-50 via-white to-amber-50 border-emerald-200' 
+                : 'bg-gradient-to-r from-emerald-950/40 via-neutral-900 to-neutral-950 border-emerald-500/30'
+            }`}>
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div className="md:col-span-8">
+                  <div className="flex flex-wrap items-center gap-2 mb-3">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500 text-neutral-950">
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      Registered Charity CIO #1180443
                     </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="md:col-span-5 flex flex-col justify-center items-start md:items-end gap-3">
-                <div className={`p-4 rounded-2xl border w-full text-left ${
-                  isLight ? 'bg-white border-neutral-200' : 'bg-black/50 border-white/10'
-                }`}>
-                  <div className="flex items-center justify-between text-xs font-bold text-emerald-400 mb-1">
-                    <span className="flex items-center gap-1.5">
-                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                      Charity Commission Registered
+                    <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                      Unit 2, Spitfire Close, Langley, SL3 8GY
                     </span>
-                    <span className="font-mono">#1180443</span>
                   </div>
-                  <p className="text-xs text-neutral-400 mb-2">
-                    Verified CIO governance for Langley Islamic Centre with full annual reporting and financial transparency.
+
+                  <h3 className={`text-2xl sm:text-3xl font-extrabold mb-3 leading-tight ${
+                    isLight ? 'text-neutral-900' : 'text-white'
+                  }`}>
+                    £550,000 Urgently Needed to Complete Acquisition Debt-Free
+                  </h3>
+
+                  <p className={`text-sm sm:text-base leading-relaxed mb-4 ${
+                    isLight ? 'text-neutral-600' : 'text-neutral-300'
+                  }`}>
+                    Management and volunteers in official high-vis jackets regularly travel to partner mosques, Friday Jumu'ah congregations, and community centres across London and the UK to hold appeals and collection bucket drives.
                   </p>
+
+                  <div className="p-3.5 rounded-2xl border text-xs space-y-1 mb-2 bg-black/40 text-neutral-200 border-white/10 font-mono">
+                    <div className="flex justify-between">
+                      <span className="text-neutral-400">Bank:</span>
+                      <strong className="text-amber-300">HSBC Bank</strong>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-neutral-400">Account Name:</span>
+                      <strong>Langley Islamic Centre</strong>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-neutral-400">Sort Code:</span>
+                      <strong>40-42-08</strong>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-neutral-400">Account Number:</span>
+                      <strong>02494973</strong>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-neutral-400">Contact / Helpline:</span>
+                      <strong className="text-emerald-400">078 4373 2106</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="md:col-span-4 flex flex-col gap-3">
+                  <button
+                    onClick={onOpenDonation}
+                    className="w-full py-3 px-4 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-400 to-emerald-400 text-neutral-950 shadow-md hover:brightness-110 active:scale-95 transition-all text-center"
+                  >
+                    Donate to £550k Building Fund
+                  </button>
+
+                  <button
+                    onClick={onOpenStandingOrder}
+                    className={`w-full py-2.5 px-4 rounded-xl font-semibold text-xs border text-center transition-all ${
+                      isLight ? 'bg-white hover:bg-neutral-50 text-neutral-800 border-neutral-300' : 'bg-white/5 hover:bg-white/10 text-white border-white/15'
+                    }`}
+                  >
+                    Download Standing Order Mandate
+                  </button>
+
                   <a
                     href="https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/5128534/contact-information"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-bold text-emerald-400 hover:text-emerald-300 underline flex items-center gap-1"
+                    className="text-xs text-center font-bold text-emerald-400 hover:text-emerald-300 underline flex items-center justify-center gap-1"
                   >
-                    View Official Register Record <ExternalLink className="w-3 h-3" />
+                    Charity Commission Official Record <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
+              </div>
+            </div>
 
-                <div className="flex w-full gap-2">
-                  <button
-                    onClick={() => onOpenStory(2)}
-                    className="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-neutral-950 transition-all flex items-center justify-center gap-1.5 shadow-md"
+            {/* Indoor Fundraising & Appeal Delegations Photo Gallery */}
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h4 className={`text-lg font-bold flex items-center gap-2 ${isLight ? 'text-neutral-900' : 'text-white'}`}>
+                    <Users className="w-4 h-4 text-emerald-400" />
+                    Management Tour & Appeal Gallery ({managementTourPhotos.length} Photos)
+                  </h4>
+                  <p className="text-xs text-neutral-400">
+                    Mosque visits, official appeals, collection buckets & volunteer delegations
+                  </p>
+                </div>
+                <button
+                  onClick={() => onOpenStory(2)}
+                  className="px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-500 text-neutral-950 flex items-center gap-1"
+                >
+                  <Play className="w-3 h-3 fill-current" /> Watch Tour Story
+                </button>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                {displayedTourPhotos.map((photo) => (
+                  <div 
+                    key={photo.id}
+                    onClick={() => setLightboxPhoto(photo)}
+                    className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer bg-neutral-900 border border-white/10 shadow hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                   >
-                    <Play className="w-3.5 h-3.5 fill-current" />
-                    Watch Tour Story
-                  </button>
-                  <a
-                    href="https://www.facebook.com/LangleyIslamicCentre/?locale=en_GB"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`py-2.5 px-4 rounded-xl font-bold text-xs border transition-all flex items-center justify-center gap-1 ${
-                      isLight ? 'bg-white hover:bg-neutral-100 text-neutral-800 border-neutral-300' : 'bg-white/10 hover:bg-white/20 text-white border-white/15'
+                    <img 
+                      src={photo.src} 
+                      alt={photo.alt}
+                      loading="lazy" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+                      <span className="text-[10px] font-bold uppercase text-emerald-400">{photo.tag}</span>
+                      <span className="text-xs text-white font-medium truncate">{photo.alt}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {managementTourPhotos.length > 8 && (
+                <div className="text-center mt-6">
+                  <button
+                    onClick={() => setShowAllTour(prev => !prev)}
+                    className={`py-2 px-5 rounded-full font-bold text-xs uppercase tracking-wider border transition-all inline-flex items-center gap-1.5 ${
+                      isLight 
+                        ? 'bg-white hover:bg-neutral-50 text-neutral-800 border-neutral-300' 
+                        : 'bg-white/10 hover:bg-white/20 text-white border-white/20'
                     }`}
                   >
-                    Facebook Page <ExternalLink className="w-3 h-3" />
-                  </a>
+                    {showAllTour ? 'Show Less' : `Show All ${managementTourPhotos.length} Appeal Photos`}
+                    <ChevronRight className={`w-3.5 h-3.5 transition-transform ${showAllTour ? '-rotate-90' : 'rotate-90'}`} />
+                  </button>
                 </div>
-              </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
 
-        {/* 3. Tournament 32-Photo Interactive Masonry Showcase */}
-        <div>
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-            <div>
-              <h3 className={`text-xl sm:text-2xl font-bold flex items-center gap-2 ${
-                isLight ? 'text-neutral-900' : 'text-white'
-              }`}>
-                <Camera className="w-5 h-5 text-amber-400" />
-                Tournament Matchday Gallery
-                <span className="text-xs font-normal px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400">
-                  {tournamentPhotos.length} Photos
-                </span>
-              </h3>
-              <p className="text-xs sm:text-sm text-neutral-400 mt-0.5">
-                Authentic action shots from the Charity Cup 2026 sponsored by Biryaniwala
-              </p>
-            </div>
-
-            {/* Filter buttons */}
-            <div className="flex items-center gap-2">
-              {[
-                { id: 'all', label: 'All Photos' },
-                { id: 'trophy', label: 'Trophies & Teams' },
-                { id: 'action', label: 'Pitch Action' }
-              ].map(cat => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActivePhotoCategory(cat.id)}
-                  className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-all ${
-                    activePhotoCategory === cat.id
-                      ? 'bg-amber-500 text-neutral-950 shadow-sm'
-                      : isLight
-                        ? 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
-                        : 'bg-white/5 text-neutral-300 hover:bg-white/10'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Photo Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {displayedPhotos.map((photo, i) => (
-              <div 
-                key={photo.id || i}
-                onClick={() => setLightboxPhoto(photo)}
-                className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer bg-neutral-900 border border-white/10 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              >
-                <img 
-                  src={photo.src} 
-                  alt={photo.alt}
-                  loading="lazy" 
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
-                  <span className="text-[10px] font-bold uppercase text-amber-400">{photo.tag}</span>
-                  <span className="text-xs text-white font-medium truncate">Tap to enlarge</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Expand/Collapse Toggle */}
-          {filteredPhotos.length > 8 && (
-            <div className="text-center mt-6">
-              <button
-                onClick={() => setShowAllPhotos(prev => !prev)}
-                className={`py-2.5 px-6 rounded-full font-bold text-xs uppercase tracking-wider border transition-all inline-flex items-center gap-2 ${
-                  isLight 
-                    ? 'bg-white hover:bg-neutral-50 text-neutral-800 border-neutral-300 shadow-sm' 
-                    : 'bg-white/10 hover:bg-white/20 text-white border-white/20'
-                }`}
-              >
-                {showAllPhotos ? 'Show Less' : `Load All ${filteredPhotos.length} Tournament Photos`}
-                <ChevronRight className={`w-4 h-4 transition-transform ${showAllPhotos ? '-rotate-90' : 'rotate-90'}`} />
-              </button>
-            </div>
-          )}
-        </div>
       </div>
 
-      {/* Lightbox Modal for individual photo view */}
+      {/* Lightbox Modal */}
       {lightboxPhoto && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-xl animate-in fade-in duration-200"

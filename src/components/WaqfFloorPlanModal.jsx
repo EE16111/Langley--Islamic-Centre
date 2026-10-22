@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { 
   X, 
-  Sparkles, 
   Heart, 
   Check, 
   ExternalLink, 
@@ -315,7 +314,7 @@ export default function WaqfFloorPlanModal({ isOpen, onClose, onSelectPledge }) 
                       type="submit"
                       className="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 shadow-lg transition-all flex items-center justify-center gap-2 group"
                     >
-                      <Sparkles className="w-4 h-4 text-amber-300" />
+                      <Heart className="w-4 h-4 text-amber-300" />
                       <span>Confirm & Dedicate Spot</span>
                       <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                     </button>

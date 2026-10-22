@@ -7,7 +7,6 @@ import {
   MapPin, 
   Clock, 
   BookOpen, 
-  Sparkles, 
   Copy, 
   Check, 
   ChevronDown, 

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Sun, Moon, Sparkles, Check } from 'lucide-react';
+import { Sun, Moon, Palette } from 'lucide-react';
 import { useTheme, THEMES } from '../context/ThemeContext';
 
 export default function ThemeSwitcher({ variant = 'navbar' }) {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, toggleTheme } = useTheme();
 
   const themes = [
     {
@@ -15,17 +15,17 @@ export default function ThemeSwitcher({ variant = 'navbar' }) {
     },
     {
       id: THEMES.LIGHT,
-      label: 'SZGMC Marble',
+      label: 'Marble Light',
       shortLabel: 'Light',
       icon: Sun,
       desc: 'Pristine White Marble & Champagne'
     },
     {
       id: THEMES.AMBIENT,
-      label: 'Twilight Courtyard',
+      label: 'Twilight Ambient',
       shortLabel: 'Ambient',
-      icon: Sparkles,
-      desc: 'Mystic Sapphire & Lantern Amber'
+      icon: Palette,
+      desc: 'Sapphire Twilight & Amber'
     }
   ];
 
@@ -56,28 +56,19 @@ export default function ThemeSwitcher({ variant = 'navbar' }) {
     );
   }
 
-  // Default Navbar pill
+  // Compact Navbar Switcher (Single click cycle to keep navbar clean)
+  const currentThemeObj = themes.find(t => t.id === theme) || themes[0];
+  const CurrentIcon = currentThemeObj.icon;
+
   return (
-    <div className="inline-flex items-center p-0.5 rounded-full bg-white/5 border border-white/15 backdrop-blur-md">
-      {themes.map((t) => {
-        const Icon = t.icon;
-        const isActive = theme === t.id;
-        return (
-          <button
-            key={t.id}
-            onClick={() => setTheme(t.id)}
-            title={`${t.label} • ${t.desc}`}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-serif transition-all duration-300 ${
-              isActive
-                ? 'bg-[#c5a059] text-[#080b10] font-bold shadow-sm'
-                : 'text-stone-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <Icon className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">{t.shortLabel}</span>
-          </button>
-        );
-      })}
-    </div>
+    <button
+      onClick={toggleTheme}
+      title={`Current: ${currentThemeObj.label}. Click to cycle themes.`}
+      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-serif bg-white/5 hover:bg-white/10 border border-white/15 text-stone-300 hover:text-white transition-all shadow-sm"
+      aria-label="Toggle website theme"
+    >
+      <CurrentIcon className="w-3.5 h-3.5 text-[#dfb76c]" />
+      <span className="hidden xl:inline">{currentThemeObj.shortLabel}</span>
+    </button>
   );
 }

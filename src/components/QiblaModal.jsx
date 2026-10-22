@@ -4,7 +4,6 @@ import {
   Compass, 
   MapPin, 
   RotateCw, 
-  Sparkles, 
   ExternalLink, 
   ShieldCheck,
   Sun,

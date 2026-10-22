@@ -6,7 +6,6 @@ import {
   Printer, 
   Building, 
   ShieldCheck, 
-  Sparkles, 
   Calendar, 
   User, 
   FileText 

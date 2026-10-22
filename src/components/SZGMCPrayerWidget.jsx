@@ -5,7 +5,7 @@ import {
   ChevronUp, 
   Clock, 
   Calendar, 
-  Sparkles,
+  X,
   ExternalLink
 } from 'lucide-react';
 import { useTheme, THEMES } from '../context/ThemeContext';
@@ -17,9 +17,10 @@ export default function SZGMCPrayerWidget({
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
   const { theme } = useTheme();
 
-  if (!prayerData || !prayerData.prayers) return null;
+  if (!prayerData || !prayerData.prayers || isDismissed) return null;
 
   const prayers = prayerData.prayers;
   const next = nextPrayer?.next || prayers[0];
@@ -111,7 +112,7 @@ export default function SZGMCPrayerWidget({
 
   return (
     <div
-      className={`fixed right-3 sm:right-6 top-20 sm:top-24 z-40 transition-all duration-500 ease-out select-none print:hidden ${
+      className={`fixed right-3 sm:right-6 top-28 sm:top-32 z-40 transition-all duration-500 ease-out select-none print:hidden ${
         isExpanded ? 'w-[260px] sm:w-[285px]' : 'w-[140px] sm:w-[155px]'
       }`}
       onMouseEnter={() => setIsHovered(true)}
@@ -119,7 +120,7 @@ export default function SZGMCPrayerWidget({
     >
       {/* Glassmorphic Container with Theme Adaptation */}
       <div 
-        className={`rounded-3xl border shadow-2xl backdrop-blur-2xl transition-all duration-300 overflow-hidden ${
+        className={`rounded-3xl border shadow-2xl backdrop-blur-2xl transition-all duration-300 overflow-hidden relative ${
           isLight
             ? 'bg-[#ffffff]/90 text-stone-800 border-[#b38728]/40 shadow-[0_20px_50px_rgba(179,135,40,0.18)] ring-1 ring-black/5'
             : isAmbient
@@ -127,6 +128,15 @@ export default function SZGMCPrayerWidget({
             : 'bg-[#080b10]/90 text-[#f4f0e6] border-[#c5a059]/35 shadow-[0_25px_60px_rgba(0,0,0,0.9)] ring-1 ring-white/10'
         }`}
       >
+        {/* Dismiss Button */}
+        <button
+          onClick={(e) => { e.stopPropagation(); setIsDismissed(true); }}
+          className="absolute top-2 right-2 p-1 rounded-full text-stone-400 hover:text-white bg-black/20 hover:bg-black/50 transition-colors z-20"
+          title="Dismiss widget"
+          aria-label="Dismiss widget"
+        >
+          <X className="w-3 h-3" />
+        </button>
         
         {/* Top Header Pin & Location */}
         <div 

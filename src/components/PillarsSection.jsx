@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { LIC_DATA } from '../data/content';
 import { 
-  Sparkles, 
+  Trophy, 
   HeartHandshake, 
   Users, 
   Compass, 
@@ -19,13 +19,13 @@ export default function PillarsSection({ onOpenVolunteerModal }) {
 
   const getIcon = (id) => {
     switch (id) {
-      case 'youth': return <Sparkles className="w-4 h-4 text-[#dfb76c]" />;
+      case 'youth': return <Trophy className="w-4 h-4 text-[#dfb76c]" />;
       case 'sisters': return <HeartHandshake className="w-4 h-4 text-[#dfb76c]" />;
       case 'families': return <Users className="w-4 h-4 text-[#dfb76c]" />;
       case 'men': return <Compass className="w-4 h-4 text-[#dfb76c]" />;
       case 'wellbeing': return <ShieldAlert className="w-4 h-4 text-[#dfb76c]" />;
       case 'charity': return <Globe className="w-4 h-4 text-[#dfb76c]" />;
-      default: return <Sparkles className="w-4 h-4 text-[#dfb76c]" />;
+      default: return <Trophy className="w-4 h-4 text-[#dfb76c]" />;
     }
   };
 

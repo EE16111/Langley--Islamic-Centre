@@ -4,10 +4,8 @@ import {
   Pause, 
   Volume2, 
   VolumeX, 
-  Music, 
   ChevronDown, 
   ChevronUp, 
-  Sparkles,
   Radio
 } from 'lucide-react';
 
@@ -16,21 +14,21 @@ const AUDIO_TRACKS = [
     id: 'adhan',
     title: 'Adhan (Call to Prayer)',
     reciter: 'Makkah Al-Mukarramah',
-    url: 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3', // reliable audio stream
-    duration: '1:05'
+    url: '/audio/adhan.mp3',
+    duration: '3:45'
   },
   {
     id: 'fatihah',
-    title: 'Surah Al-Fatihah (The Opening)',
+    title: 'Surah Al-Fatihah (Complete)',
     reciter: 'Mishary Rashid Alafasy',
-    url: 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3',
-    duration: '0:45'
+    url: '/audio/fatihah.mp3',
+    duration: '0:50'
   },
   {
     id: 'kursi',
     title: 'Ayat Al-Kursi (Throne Verse)',
     reciter: 'Mishary Rashid Alafasy',
-    url: 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/262.mp3',
+    url: '/audio/kursi.mp3',
     duration: '1:18'
   }
 ];

@@ -250,7 +250,7 @@ export const LIC_DATA = {
     {
       id: "youth",
       name: "Youth",
-      icon: "Sparkles",
+      icon: "Trophy",
       title: "Youth Development & Sports",
       description: "Creating a positive, welcoming and supportive environment where young people can connect, discover their potential and build lasting friendships.",
       activities: [

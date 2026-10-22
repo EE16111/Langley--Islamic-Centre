@@ -7,7 +7,7 @@ import {
   Check, 
   ExternalLink, 
   ShieldCheck, 
-  Sparkles,
+  Calendar,
   CreditCard,
   Building,
   RotateCw
@@ -83,7 +83,7 @@ export default function DonationModal({ isOpen, onClose }) {
                 : 'bg-slate-900 text-slate-400 hover:text-white'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <Calendar className="w-3.5 h-3.5 text-amber-300" />
             <span>Auto Monthly</span>
           </button>
 
@@ -106,7 +106,7 @@ export default function DonationModal({ isOpen, onClose }) {
             <div className="space-y-4">
               {/* Gift Aid Awareness Alert */}
               <div className="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-950/40 to-teal-950/30 border border-emerald-500/30 text-xs text-emerald-300 flex items-start gap-3">
-                <Sparkles className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                <ShieldCheck className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-white block font-semibold">UK Taxpayer? Unlock +25% Extra Free</strong>
                   <p className="text-[11px] text-emerald-200/80 mt-0.5">
