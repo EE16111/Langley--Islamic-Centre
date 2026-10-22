@@ -21,7 +21,8 @@ import {
   Sun,
   Sunset,
   Moon,
-  ExternalLink
+  ExternalLink,
+  Trophy
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -298,6 +299,18 @@ Charity Reg No: 1180443`;
 
         {/* Authentic Civic & Spatial Tools Ribbon */}
         <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
+          <a
+            href="#stories"
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-serif font-bold transition-all hover:scale-105 shadow-md ${
+              isLight
+                ? 'text-amber-900 bg-gradient-to-r from-amber-100 to-amber-50 hover:from-amber-200 hover:to-amber-100 border border-amber-300'
+                : 'text-amber-300 bg-gradient-to-r from-amber-950/80 to-emerald-950/80 hover:brightness-125 border border-amber-500/40'
+            }`}
+          >
+            <Trophy className="w-3.5 h-3.5 text-amber-400" />
+            <span>🏆 Charity Football Cup '26 & Stories (Sponsored by Biryaniwala)</span>
+          </a>
+
           <button
             onClick={onOpenFloorPlan}
             className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-serif font-bold transition-all hover:scale-105 ${

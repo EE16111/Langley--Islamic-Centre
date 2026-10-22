@@ -22,6 +22,9 @@ import AdminDashboardModal from './components/AdminDashboardModal';
 import MosqueTVSignageModal from './components/MosqueTVSignageModal';
 import SZGMCPrayerWidget from './components/SZGMCPrayerWidget';
 import ThemeSwitcher from './components/ThemeSwitcher';
+import CommunityStoriesSection from './components/CommunityStoriesSection';
+import StoryViewerModal from './components/StoryViewerModal';
+import { storiesData } from './data/storiesData';
 import { useTheme } from './context/ThemeContext';
 
 import { calculatePrayerTimes, getNextPrayer, subscribePrayerCMS } from './utils/prayerTimes';
@@ -45,6 +48,13 @@ export default function App() {
   const [qiblaModalOpen, setQiblaModalOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
   const [tvModalOpen, setTvModalOpen] = useState(false);
+  const [storyViewerOpen, setStoryViewerOpen] = useState(false);
+  const [activeStoryIndex, setActiveStoryIndex] = useState(0);
+
+  const handleOpenStory = (index = 0) => {
+    setActiveStoryIndex(index);
+    setStoryViewerOpen(true);
+  };
 
   // Live clock updating every second
   useEffect(() => {
@@ -64,6 +74,10 @@ export default function App() {
       if (hash === '#donate') setDonationModalOpen(true);
       if (hash === '#qibla') setQiblaModalOpen(true);
       if (hash === '#quran') setQuranModalOpen(true);
+      if (hash === '#story' || hash === '#stories') {
+        setActiveStoryIndex(0);
+        setStoryViewerOpen(true);
+      }
     };
     handleHash();
     window.addEventListener('hashchange', handleHash);
@@ -124,6 +138,12 @@ export default function App() {
         />
 
         <SpitfireLocationSection />
+
+        <CommunityStoriesSection 
+          onOpenStory={handleOpenStory}
+          onOpenDonation={() => setDonationModalOpen(true)}
+          onOpenStandingOrder={() => setStandingOrderModalOpen(true)}
+        />
 
         <DonationSection 
           onOpenFloorPlan={() => setFloorPlanModalOpen(true)}
@@ -213,6 +233,16 @@ export default function App() {
       <MosqueTVSignageModal 
         isOpen={tvModalOpen}
         onClose={() => setTvModalOpen(false)}
+      />
+
+      {/* Interactive 2026 Fullscreen Story Viewer Modal */}
+      <StoryViewerModal 
+        isOpen={storyViewerOpen}
+        onClose={() => setStoryViewerOpen(false)}
+        stories={storiesData}
+        initialStoryIndex={activeStoryIndex}
+        onOpenDonation={() => setDonationModalOpen(true)}
+        onOpenStandingOrder={() => setStandingOrderModalOpen(true)}
       />
 
       {/* Floating Spiritual Audio Bar */}

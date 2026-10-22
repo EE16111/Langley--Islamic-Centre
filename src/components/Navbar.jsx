@@ -48,6 +48,7 @@ export default function Navbar({
   const navLinks = [
     { name: 'Prayer Times', href: '#prayer-times' },
     { name: 'Permanent Home', href: '#spitfire-close' },
+    { name: 'Stories & Cup', href: '#stories' },
     { name: 'Quran Classes', href: '#quran-classes' },
     { name: 'Community', href: '#community-pillars' },
     { name: 'Charity (100%)', href: '#charity-work' },
