@@ -49,6 +49,7 @@ export default function App() {
   const [qiblaModalOpen, setQiblaModalOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
   const [tvModalOpen, setTvModalOpen] = useState(false);
+  const [prayerWidgetOpen, setPrayerWidgetOpen] = useState(false);
   const [storyViewerOpen, setStoryViewerOpen] = useState(false);
   const [activeStoryIndex, setActiveStoryIndex] = useState(0);
   const [viewMode, setViewMode] = useState('home'); // 'home' | 'qibla'
@@ -119,6 +120,8 @@ export default function App() {
       {/* Top Navigation */}
       <Navbar 
         nextPrayer={nextPrayer}
+        prayerWidgetOpen={prayerWidgetOpen}
+        onTogglePrayerWidget={() => setPrayerWidgetOpen(!prayerWidgetOpen)}
         onOpenDonate={() => setDonationModalOpen(true)}
         onOpenTimetable={() => setTimetableModalOpen(true)}
         onOpenQuranModal={() => setQuranModalOpen(true)}
@@ -266,11 +269,16 @@ export default function App() {
       {/* Floating Spiritual Audio Bar */}
       <SpiritualAudioPlayer />
 
-      {/* Persistent Sheikh Zayed Grand Mosque (SZGMC) Floating Prayer Widget */}
+      {/* On-Demand Sheikh Zayed Grand Mosque (SZGMC) Prayer Timetable Popover */}
       <SZGMCPrayerWidget 
+        isOpen={prayerWidgetOpen}
+        onClose={() => setPrayerWidgetOpen(false)}
         prayerData={prayerData}
         nextPrayer={nextPrayer}
-        onOpenTimetable={() => setTimetableModalOpen(true)}
+        onOpenTimetable={() => {
+          setPrayerWidgetOpen(false);
+          setTimetableModalOpen(true);
+        }}
       />
 
       {/* Floating Theme Switcher Quick Toggle (Bottom-Left) */}

@@ -100,16 +100,16 @@ Charity Reg No: 1180443`;
       </div>
 
       {/* Architectural Corner Registration Crosshairs (+) */}
-      <div className="hidden lg:block absolute top-28 left-8 text-[11px] font-mono text-[#c5a059]/40 select-none">
+      <div className="hidden lg:block absolute top-24 left-8 text-[11px] font-mono text-[#c5a059]/40 select-none">
         + 51.5074° N, 0.5408° W
       </div>
-      <div className="hidden lg:block absolute top-28 right-8 text-[11px] font-mono text-[#c5a059]/40 select-none text-right">
+      <div className="hidden lg:block absolute top-24 right-8 text-[11px] font-mono text-[#c5a059]/40 select-none text-right">
         QIBLA 118.9° ESE +
       </div>
 
-      {/* Backdrop Scene Switcher */}
-      <div className={`absolute top-28 right-4 sm:right-10 z-20 hidden sm:flex items-center gap-1.5 p-1 rounded-full shadow-xl backdrop-blur-xl text-[10px] ${
-        isLight ? 'bg-white/90 border border-[#b38728]/30' : 'bg-[#0e141f]/90 border border-[#c5a059]/25'
+      {/* Backdrop Scene Switcher - Anchored at bottom-right corner of hero image, completely clear of navbar & hero text */}
+      <div className={`absolute bottom-6 right-6 sm:right-10 z-20 hidden sm:flex items-center gap-1.5 p-1 rounded-full shadow-2xl backdrop-blur-xl text-[10px] ${
+        isLight ? 'bg-white/95 border border-[#b38728]/35' : 'bg-[#0e141f]/95 border border-[#c5a059]/35'
       }`}>
         <span className="pl-2.5 pr-1 text-[#c5a059] font-serif uppercase tracking-widest text-[9px]">Viewpoint:</span>
         <button
