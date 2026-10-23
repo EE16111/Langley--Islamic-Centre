@@ -72,7 +72,7 @@ export default function PrayerTimesSection({
                 </>
               )}
               <span className="text-stone-500">•</span>
-              <span className="text-stone-400 text-xs font-mono">Spitfire Close (51.5074° N, 0.5422° W)</span>
+              <span className="text-stone-400 text-xs font-serif">Unit 2, Spitfire Close, Langley, SL3 8GY</span>
             </div>
           </div>
 

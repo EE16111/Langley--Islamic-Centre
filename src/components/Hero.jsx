@@ -98,11 +98,6 @@ Charity Reg No: 1180443`;
         <div className="absolute inset-0 bg-[#3d2f13]/10 mix-blend-color" />
       </div>
 
-      {/* Architectural Corner Registration Crosshairs (+) */}
-      <div className="hidden lg:block absolute top-24 left-8 text-[11px] font-mono text-[#c5a059]/50 select-none space-y-0.5">
-        <div>+ 51.5074° N, 0.5408° W (Spitfire Close)</div>
-        <div className="text-[10px] text-[#c5a059]/40">QIBLA 118.91° ESE • 4,818 KM +</div>
-      </div>
 
       {/* Backdrop Scene Switcher - Anchored at bottom-right corner of hero image, completely clear of navbar & hero text */}
       <div className={`absolute bottom-6 right-6 sm:right-10 z-20 hidden sm:flex items-center gap-1.5 p-1 rounded-full shadow-2xl backdrop-blur-xl text-[10px] ${
