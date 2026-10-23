@@ -1,3 +1,5 @@
+import { getPrayerCMSConfig, savePrayerCMSConfig } from './prayerCMS';
+
 /**
  * Langley Islamic Centre — Enterprise Content Management & Zero-Trust Security Service
  * Implements JWT authentication, session expiration, audit logging, and content state management.
@@ -30,6 +32,14 @@ export function verifyAdminPassword(input) {
 
 // Default Authentic Content
 export const DEFAULT_CONTENT_CMS = {
+  general: {
+    mosqueName: "Langley Islamic Centre",
+    tagline: "Spitfire Close Permanent Sanctuary Appeal",
+    address: "Unit 2, Spitfire Close, Langley, Slough, SL3 8GY",
+    charityNumber: "1180443",
+    phone: "078 4373 2106",
+    email: "info@langleyislamiccentre.co.uk"
+  },
   waqfCampaign: {
     targetAmount: 550000,
     currentRaised: 195000,
@@ -68,7 +78,10 @@ export const DEFAULT_CONTENT_CMS = {
     sponsorName: "Biryaniwala",
     sponsorAddress: "308 High Street, Slough, SL1 1NB",
     sponsorHighlights: "Headline sponsor providing hot food catering for players and volunteers"
-  }
+  },
+  mediaOverrides: {}, // Keyed by photo id (e.g., 'pitch-20': { title, caption, category, tag, isFeatured, hidden })
+  customPhotos: [],   // Array of custom photo assets added via Media Library
+  customStories: []   // Array of custom stories added via CMS
 };
 
 // Simple cryptographic base64url encoder
@@ -223,4 +236,50 @@ export function subscribeContentCMS(callback) {
   const handler = (e) => callback(e.detail || getContentCMS());
   window.addEventListener(CMS_EVENT_NAME, handler);
   return () => window.removeEventListener(CMS_EVENT_NAME, handler);
+}
+
+/**
+ * 1-Click JSON Site Export (Adobe / WordPress Level Migration)
+ */
+export function exportCMSBackup() {
+  const backup = {
+    schema: "lic_cms_backup_v2",
+    exportedAt: new Date().toISOString(),
+    org: "Langley Islamic Centre (CIO #1180443)",
+    content: getContentCMS(),
+    prayer: getPrayerCMSConfig(),
+    audit: getAuditLogs()
+  };
+  return JSON.stringify(backup, null, 2);
+}
+
+/**
+ * 1-Click JSON Site Restore / Import
+ */
+export function importCMSBackup(jsonString) {
+  try {
+    const data = typeof jsonString === 'string' ? JSON.parse(jsonString) : jsonString;
+    if (!data) return { success: false, error: 'Empty backup file.' };
+
+    let importedSections = [];
+
+    if (data.content && typeof data.content === 'object') {
+      saveContentCMS(data.content, 'Imported content configuration from JSON backup');
+      importedSections.push('Content CMS');
+    }
+
+    if (data.prayer && typeof data.prayer === 'object') {
+      savePrayerCMSConfig(data.prayer);
+      importedSections.push('Prayer CMS');
+    }
+
+    if (importedSections.length === 0) {
+      return { success: false, error: 'Backup does not contain valid content or prayer configurations.' };
+    }
+
+    logAudit('SYSTEM_RESTORE', `Restored ${importedSections.join(' & ')} from backup`, 'superadmin');
+    return { success: true, count: importedSections.length };
+  } catch (err) {
+    return { success: false, error: err.message || 'Invalid JSON format.' };
+  }
 }

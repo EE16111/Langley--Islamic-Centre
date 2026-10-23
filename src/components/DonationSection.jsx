@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LIC_DATA } from '../data/content';
+import { useContentCMS } from '../hooks/useContentCMS';
 import { 
   Heart, 
   Copy, 
@@ -19,11 +20,18 @@ import {
 import confetti from 'canvas-confetti';
 
 export default function DonationSection({ onOpenFloorPlan, onOpenStandingOrder }) {
+  const { content } = useContentCMS();
   const [givingType, setGivingType] = useState('one-time'); // 'one-time' | 'monthly'
   const [sliderAmount, setSliderAmount] = useState(100);
   const [copiedField, setCopiedField] = useState(null);
 
   const appeal = LIC_DATA.urgentAppeal;
+  const waqfConfig = content?.waqfCampaign || {};
+  const currentRaised = waqfConfig.currentRaised ?? 250000;
+  const targetRequired = waqfConfig.targetAmount ?? 550000;
+  const totalTarget = 800000;
+  const percentage = Math.min(100, Math.round((currentRaised / totalTarget) * 100));
+  const bankInfo = waqfConfig.bankDetails || LIC_DATA.bankDetails;
 
   const handleCopy = (field, text) => {
     navigator.clipboard.writeText(text);
@@ -60,11 +68,11 @@ export default function DonationSection({ onOpenFloorPlan, onOpenStandingOrder }
           </div>
 
           <h2 className="text-4xl sm:text-6xl font-serif font-bold text-[#f4f0e6] tracking-tight leading-tight">
-            Help Secure the Remaining <span className="gold-leaf-text">£550,000</span>
+            Help Secure the Remaining <span className="gold-leaf-text">£{targetRequired.toLocaleString()}</span>
           </h2>
 
           <p className="mt-4 text-base sm:text-lg text-stone-300 font-sans font-light leading-relaxed max-w-2xl mx-auto">
-            {appeal.highlight} Our community has already raised £250,000 towards the £800,000 total. Every penny donated is an unceasing Sadaqah Jariyah for generations to come.
+            {appeal.highlight} Our community has already raised £{currentRaised.toLocaleString()} towards the £{totalTarget.toLocaleString()} total. Every penny donated is an unceasing Sadaqah Jariyah for generations to come.
           </p>
 
           {/* Surah Al-Hadid Verse Calligraphy Plaque */}
@@ -90,10 +98,10 @@ export default function DonationSection({ onOpenFloorPlan, onOpenStandingOrder }
               </span>
               <div className="flex items-baseline gap-3">
                 <span className="text-3xl sm:text-4xl font-mono font-black text-[#f4f0e6] tracking-tight">
-                  £250,000
+                  £{currentRaised.toLocaleString()}
                 </span>
                 <span className="text-sm sm:text-base text-stone-400 font-sans">
-                  already raised of <strong className="text-[#f4f0e6] font-mono">£800,000 target</strong>
+                  already raised of <strong className="text-[#f4f0e6] font-mono">£{totalTarget.toLocaleString()} target</strong>
                 </span>
               </div>
             </div>
@@ -103,7 +111,7 @@ export default function DonationSection({ onOpenFloorPlan, onOpenStandingOrder }
                 Urgent Amount Required
               </span>
               <span className="text-2xl sm:text-3xl font-mono font-black text-[#e07a5f] tracking-tight">
-                £550,000
+                £{targetRequired.toLocaleString()}
               </span>
             </div>
           </div>
@@ -112,13 +120,13 @@ export default function DonationSection({ onOpenFloorPlan, onOpenStandingOrder }
           <div className="w-full h-4 rounded-full bg-[#080b10] p-0.5 border border-[#c5a059]/30 relative overflow-hidden shadow-inner">
             <div 
               className="h-full rounded-full bg-gradient-to-r from-[#b38728] via-[#dfb76c] to-[#74c69d] shadow-[0_0_20px_rgba(223,183,108,0.5)] transition-all duration-1000"
-              style={{ width: `${appeal.percentage}%` }}
+              style={{ width: `${percentage}%` }}
             />
           </div>
 
           <div className="mt-3 flex items-center justify-between text-xs text-stone-400 font-serif">
             <span>£0 (Acquisition Started)</span>
-            <span className="font-bold text-[#dfb76c]">{appeal.percentage}% Community Funded</span>
+            <span className="font-bold text-[#dfb76c]">{percentage}% Community Funded</span>
             <span>£800,000 (Freehold Deed Debt-Free)</span>
           </div>
 
@@ -484,23 +492,23 @@ export default function DonationSection({ onOpenFloorPlan, onOpenStandingOrder }
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-6 text-left">
             <div className="p-4 rounded-2xl bg-[#080b10] border border-[#c5a059]/20">
               <span className="text-[10px] font-serif uppercase tracking-widest text-stone-400 block mb-1">Bank</span>
-              <span className="text-lg font-serif font-bold text-[#f4f0e6]">{LIC_DATA.bankDetails.bank}</span>
+              <span className="text-lg font-serif font-bold text-[#f4f0e6]">{bankInfo.bank}</span>
             </div>
 
             <div className="p-4 rounded-2xl bg-[#080b10] border border-[#c5a059]/20">
               <span className="text-[10px] font-serif uppercase tracking-widest text-stone-400 block mb-1">Account Title</span>
-              <span className="text-sm font-serif font-bold text-[#f4f0e6] block truncate" title={LIC_DATA.bankDetails.accountName}>
-                {LIC_DATA.bankDetails.accountName}
+              <span className="text-sm font-serif font-bold text-[#f4f0e6] block truncate" title={bankInfo.accountName}>
+                {bankInfo.accountName}
               </span>
             </div>
 
             <div className="p-4 rounded-2xl bg-[#080b10] border border-[#c5a059]/20 flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-serif uppercase tracking-widest text-stone-400 block mb-1">Account No</span>
-                <span className="text-lg font-mono font-bold text-[#dfb76c]">{LIC_DATA.bankDetails.accountNumber}</span>
+                <span className="text-lg font-mono font-bold text-[#dfb76c]">{bankInfo.accountNumber}</span>
               </div>
               <button
-                onClick={() => handleCopy('acc', LIC_DATA.bankDetails.accountNumber)}
+                onClick={() => handleCopy('acc', bankInfo.accountNumber)}
                 className="p-2 rounded-xl bg-[#162030] hover:bg-[#1f2d44] text-[#dfb76c] transition-all border border-[#c5a059]/30"
                 title="Copy Account Number"
               >
@@ -511,10 +519,10 @@ export default function DonationSection({ onOpenFloorPlan, onOpenStandingOrder }
             <div className="p-4 rounded-2xl bg-[#080b10] border border-[#c5a059]/20 flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-serif uppercase tracking-widest text-stone-400 block mb-1">Sort Code</span>
-                <span className="text-lg font-mono font-bold text-[#dfb76c]">{LIC_DATA.bankDetails.sortCode}</span>
+                <span className="text-lg font-mono font-bold text-[#dfb76c]">{bankInfo.sortCode}</span>
               </div>
               <button
-                onClick={() => handleCopy('sort', LIC_DATA.bankDetails.sortCode)}
+                onClick={() => handleCopy('sort', bankInfo.sortCode)}
                 className="p-2 rounded-xl bg-[#162030] hover:bg-[#1f2d44] text-[#dfb76c] transition-all border border-[#c5a059]/30"
                 title="Copy Sort Code"
               >

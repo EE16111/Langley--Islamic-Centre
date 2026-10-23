@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LIC_DATA } from '../data/content';
 import LicLogo from './LicLogo';
 import { useTheme } from '../context/ThemeContext';
+import { useContentCMS } from '../hooks/useContentCMS';
 import { 
   Heart, 
   MapPin, 
@@ -37,17 +38,21 @@ export default function Hero({
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const isAmbient = theme === 'ambient';
+  const { content } = useContentCMS();
+  const waqfConfig = content?.waqfCampaign || {};
+  const targetRequired = waqfConfig.targetAmount ?? 550000;
+  const bankInfo = waqfConfig.bankDetails || LIC_DATA.bankDetails;
 
   const [copiedBank, setCopiedBank] = useState(false);
   const [bgPhoto, setBgPhoto] = useState('mosque'); // 'mosque' | 'spitfire'
 
   const handleCopyBank = () => {
     const text = `Langley Islamic Centre Bank Transfer:
-Bank: ${LIC_DATA.bankDetails.bank}
-Account Name: ${LIC_DATA.bankDetails.accountName}
-Account No: ${LIC_DATA.bankDetails.accountNumber}
-Sort Code: ${LIC_DATA.bankDetails.sortCode}
-Charity Reg No: 1180443`;
+Bank: ${bankInfo.bank}
+Account Name: ${bankInfo.accountName}
+Account No: ${bankInfo.accountNumber}
+Sort Code: ${bankInfo.sortCode}
+Charity Reg No: ${bankInfo.charityNumber || '1180443'}`;
     navigator.clipboard.writeText(text);
     setCopiedBank(true);
     confetti({
@@ -178,7 +183,7 @@ Charity Reg No: 1180443`;
         <p className={`mt-5 text-base sm:text-lg max-w-2xl font-sans font-light leading-relaxed ${
           isLight ? 'text-stone-700' : 'text-stone-300/90'
         }`}>
-          {LIC_DATA.tagline} United in faith, learning, and service. Help us secure the remaining £550,000 to purchase our permanent home on Spitfire Close debt-free.
+          {content?.general?.tagline || LIC_DATA.tagline} United in faith, learning, and service. Help us secure the remaining £{targetRequired.toLocaleString()} to purchase our permanent home on Spitfire Close debt-free.
         </p>
 
         {/* Analog Sanctuary Prayer Plaque (Bespoke Handcrafted Timetable Bar) */}
@@ -238,7 +243,7 @@ Charity Reg No: 1180443`;
             className="w-full sm:w-auto flex items-center justify-center gap-3 px-9 py-4 rounded-full btn-monumental-gold text-base uppercase tracking-wider font-bold transition-all"
           >
             <Heart className="w-4 h-4 fill-[#080b10]" />
-            <span>Support £550,000 Waqf Appeal</span>
+            <span>Support £{targetRequired.toLocaleString()} Waqf Appeal</span>
           </button>
 
           <button

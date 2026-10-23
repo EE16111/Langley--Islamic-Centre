@@ -14,6 +14,7 @@ import {
   Users
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useContentCMS } from '../hooks/useContentCMS';
 import { storiesData, sponsorDetails } from '../data/storiesData';
 import { tournamentPitchPhotos, managementTourPhotos } from '../data/tournamentPhotos';
 
@@ -24,14 +25,40 @@ export default function CommunityStoriesSection({
 }) {
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const { content } = useContentCMS();
+  const overrides = content?.mediaOverrides || {};
 
   const [activeTab, setActiveTab] = useState('tournament'); // 'tournament' | 'fundraising'
   const [lightboxPhoto, setLightboxPhoto] = useState(null);
   const [showAllPitch, setShowAllPitch] = useState(false);
   const [showAllTour, setShowAllTour] = useState(false);
 
-  const displayedPitchPhotos = showAllPitch ? tournamentPitchPhotos : tournamentPitchPhotos.slice(0, 8);
-  const displayedTourPhotos = showAllTour ? managementTourPhotos : managementTourPhotos.slice(0, 8);
+  const customPhotos = content?.customPhotos || [];
+
+  const processPhotos = (photos, categoryKey) => {
+    const matchingCustom = customPhotos.filter(p => p.category === categoryKey);
+    const combined = [...photos, ...matchingCustom];
+
+    return combined
+      .map(p => {
+        const o = overrides[p.id] || {};
+        return {
+          ...p,
+          alt: o.title || p.alt,
+          caption: o.caption || p.caption,
+          tag: o.tag || p.tag,
+          isFeatured: o.isFeatured ?? false,
+          hidden: o.hidden ?? false
+        };
+      })
+      .filter(p => !p.hidden);
+  };
+
+  const processedPitchPhotos = processPhotos(tournamentPitchPhotos, 'pitch');
+  const processedTourPhotos = processPhotos(managementTourPhotos, 'tour');
+
+  const displayedPitchPhotos = showAllPitch ? processedPitchPhotos : processedPitchPhotos.slice(0, 8);
+  const displayedTourPhotos = showAllTour ? processedTourPhotos : processedTourPhotos.slice(0, 8);
 
   return (
     <section id="stories" className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
@@ -302,7 +329,11 @@ export default function CommunityStoriesSection({
                   <div 
                     key={photo.id}
                     onClick={() => setLightboxPhoto(photo)}
-                    className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer bg-neutral-900 border border-white/10 shadow hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                    className={`group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer bg-neutral-900 border transition-all duration-300 hover:-translate-y-1 shadow hover:shadow-xl ${
+                      photo.isFeatured 
+                        ? 'border-amber-400 ring-2 ring-amber-400/30' 
+                        : 'border-white/10'
+                    }`}
                   >
                     <img 
                       src={photo.src} 
@@ -310,6 +341,13 @@ export default function CommunityStoriesSection({
                       loading="lazy" 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
+                    {photo.isFeatured && (
+                      <div className="absolute top-2.5 left-2.5 z-10">
+                        <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-400 text-neutral-950 shadow-md">
+                          ★ Featured
+                        </span>
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
                       <span className="text-[10px] font-bold uppercase text-amber-400">{photo.tag}</span>
                       <span className="text-xs text-white font-medium truncate">{photo.alt}</span>
@@ -448,7 +486,11 @@ export default function CommunityStoriesSection({
                   <div 
                     key={photo.id}
                     onClick={() => setLightboxPhoto(photo)}
-                    className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer bg-neutral-900 border border-white/10 shadow hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                    className={`group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer bg-neutral-900 border transition-all duration-300 hover:-translate-y-1 shadow hover:shadow-xl ${
+                      photo.isFeatured 
+                        ? 'border-emerald-400 ring-2 ring-emerald-400/30' 
+                        : 'border-white/10'
+                    }`}
                   >
                     <img 
                       src={photo.src} 
@@ -456,6 +498,13 @@ export default function CommunityStoriesSection({
                       loading="lazy" 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
+                    {photo.isFeatured && (
+                      <div className="absolute top-2.5 left-2.5 z-10">
+                        <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-emerald-400 text-neutral-950 shadow-md">
+                          ★ Featured
+                        </span>
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
                       <span className="text-[10px] font-bold uppercase text-emerald-400">{photo.tag}</span>
                       <span className="text-xs text-white font-medium truncate">{photo.alt}</span>
@@ -504,9 +553,14 @@ export default function CommunityStoriesSection({
               alt={lightboxPhoto.alt}
               className="max-w-full max-h-[82vh] object-contain rounded-2xl shadow-2xl border border-white/15"
             />
-            <p className="text-sm text-neutral-300 mt-3 text-center">
+            <p className="text-sm font-semibold text-white mt-3 text-center">
               {lightboxPhoto.alt}
             </p>
+            {lightboxPhoto.caption && (
+              <p className="text-xs text-neutral-300 mt-1 text-center max-w-xl">
+                {lightboxPhoto.caption}
+              </p>
+            )}
           </div>
         </div>
       )}
