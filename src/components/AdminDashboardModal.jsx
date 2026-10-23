@@ -43,10 +43,10 @@ import {
   validateAdminJWT, 
   revokeAdminJWT, 
   getAuditLogs, 
-  logAudit 
+  logAudit,
+  verifyAdminPassword,
+  setAdminPassword
 } from '../services/contentCMS';
-
-const ADMIN_MASTER_PASSWORD = 'LIC2026!Admin';
 
 export default function AdminDashboardModal({ 
   isOpen, 
@@ -58,6 +58,8 @@ export default function AdminDashboardModal({
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState('');
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [newPasswordInput, setNewPasswordInput] = useState('');
+  const [passwordChangeMsg, setPasswordChangeMsg] = useState('');
 
   // Prayer CMS Config State
   const [prayerConfig, setPrayerConfig] = useState(getPrayerCMSConfig());
@@ -101,7 +103,7 @@ export default function AdminDashboardModal({
     e.preventDefault();
     setAuthError('');
 
-    if (passwordInput === ADMIN_MASTER_PASSWORD) {
+    if (verifyAdminPassword(passwordInput)) {
       const token = generateAdminJWT('superadmin', 'lic-trustee-admin');
       const auth = validateAdminJWT();
       setAuthSession(auth);
@@ -112,6 +114,20 @@ export default function AdminDashboardModal({
     } else {
       setAuthError('Invalid administrator credentials. Access denied by Zero-Trust policy.');
       logAudit('SECURITY_ALERT', 'Failed login attempt with incorrect password', 'unknown-client');
+    }
+  };
+
+  // Change Admin Master Password
+  const handleChangePassword = () => {
+    setPasswordChangeMsg('');
+    const res = setAdminPassword(newPasswordInput);
+    if (res.success) {
+      setPasswordChangeMsg('Master password updated successfully! Keep your new password secure.');
+      setNewPasswordInput('');
+      setAuditLogs(getAuditLogs());
+      setTimeout(() => setPasswordChangeMsg(''), 4000);
+    } else {
+      setPasswordChangeMsg(res.error || 'Failed to update password');
     }
   };
 
@@ -250,11 +266,14 @@ export default function AdminDashboardModal({
                 Authenticate & Issue JWT
               </button>
 
-              <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-[11px] text-slate-400 text-left space-y-1">
-                <span className="font-bold text-slate-300 block">Zero-Trust Diagnostics:</span>
-                <div>• Master Role: Superadmin (CIO #1180443)</div>
-                <div>• Default Password: <code className="text-amber-400">LIC2026!Admin</code></div>
-                <div>• Session Lifespan: 60 minutes rolling JWT</div>
+              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-[11px] text-slate-400 text-left space-y-1.5">
+                <div className="flex items-center gap-1.5 text-slate-300 font-bold">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Authorized Personnel Only</span>
+                </div>
+                <p className="text-slate-500 leading-normal">
+                  Access is restricted to authorized Langley Islamic Centre trustees (CIO #1180443). Session tokens automatically expire after 60 minutes of inactivity. All actions are cryptographically logged.
+                </p>
               </div>
             </form>
           </div>
@@ -772,6 +791,43 @@ export default function AdminDashboardModal({
                       <span>Principal: {authSession.payload.sub}</span>
                       <span>Expires in: {authSession.expiresInMinutes} minutes</span>
                     </div>
+                  </div>
+
+                  {/* Change Administrator Password Form */}
+                  <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
+                    <div>
+                      <h5 className="text-sm font-bold text-white flex items-center gap-2">
+                        <Lock className="w-4 h-4 text-amber-400" />
+                        <span>Update Administrator Master Password</span>
+                      </h5>
+                      <p className="text-xs text-slate-400 mt-0.5">
+                        Change the secret master password used to log in to this CMS. Only authorized trustees should know this password.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-2 max-w-lg">
+                      <input
+                        type="password"
+                        placeholder="Enter new master password (min 6 characters)..."
+                        className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                        value={newPasswordInput}
+                        onChange={(e) => setNewPasswordInput(e.target.value)}
+                      />
+                      <button
+                        onClick={handleChangePassword}
+                        className="px-4 py-2.5 rounded-xl text-xs font-bold bg-amber-400 hover:bg-amber-300 text-neutral-950 transition-colors flex items-center justify-center gap-1.5 flex-shrink-0"
+                      >
+                        <KeyRound className="w-3.5 h-3.5" />
+                        <span>Save New Password</span>
+                      </button>
+                    </div>
+
+                    {passwordChangeMsg && (
+                      <div className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-1.5">
+                        <Check className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>{passwordChangeMsg}</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Audit Logs Table */}

@@ -39,7 +39,6 @@ export default function Hero({
   const isAmbient = theme === 'ambient';
 
   const [copiedBank, setCopiedBank] = useState(false);
-  const [logoTheme, setLogoTheme] = useState('gold'); // 'gold' default for authentic sanctuary feel
   const [bgPhoto, setBgPhoto] = useState('mosque'); // 'mosque' | 'spitfire'
 
   const handleCopyBank = () => {
@@ -166,48 +165,10 @@ Charity Reg No: 1180443`;
         <div className="relative mb-8 flex flex-col items-center">
           <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-52 md:h-52 flex items-center justify-center p-4 rounded-3xl sanctuary-plaque group transition-transform duration-500 hover:scale-[1.02]">
             <LicLogo 
-              variant={logoTheme} 
+              variant="gold" 
               className="w-full h-full object-contain filter drop-shadow-[0_0_20px_rgba(197,160,89,0.35)]" 
               glow={true} 
             />
-            {/* Theme switcher pill */}
-            <div className={`absolute -bottom-3.5 left-1/2 -translate-x-1/2 flex items-center gap-1 p-1 rounded-full shadow-2xl backdrop-blur-xl ${
-              isLight ? 'bg-white border border-[#b38728]/35' : 'bg-[#0a0e16] border border-[#c5a059]/35'
-            }`}>
-              <button
-                onClick={() => setLogoTheme('gold')}
-                className={`px-2.5 py-0.5 rounded-full text-[10px] font-serif font-bold tracking-wider transition-all ${
-                  logoTheme === 'gold' 
-                    ? 'bg-[#c5a059] text-[#080b10] shadow-sm' 
-                    : isLight ? 'text-stone-600 hover:text-stone-900' : 'text-stone-400 hover:text-white'
-                }`}
-                title="Gilded Antique Gold"
-              >
-                Gilded Gold
-              </button>
-              <button
-                onClick={() => setLogoTheme('white')}
-                className={`px-2.5 py-0.5 rounded-full text-[10px] font-serif font-bold tracking-wider transition-all ${
-                  logoTheme === 'white' 
-                    ? 'bg-stone-200 text-[#080b10] shadow-sm' 
-                    : isLight ? 'text-stone-600 hover:text-stone-900' : 'text-stone-400 hover:text-white'
-                }`}
-                title="Monochrome Alabaster"
-              >
-                Alabaster
-              </button>
-              <button
-                onClick={() => setLogoTheme('original')}
-                className={`px-2.5 py-0.5 rounded-full text-[10px] font-serif font-bold tracking-wider transition-all ${
-                  logoTheme === 'original' 
-                    ? 'bg-sky-500 text-white shadow-sm' 
-                    : isLight ? 'text-stone-600 hover:text-stone-900' : 'text-stone-400 hover:text-white'
-                }`}
-                title="Founding Colours"
-              >
-                Founding
-              </button>
-            </div>
           </div>
         </div>
 

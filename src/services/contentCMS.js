@@ -6,7 +6,27 @@
 const CMS_STORAGE_KEY = 'lic_enterprise_cms_v1';
 const JWT_STORAGE_KEY = 'lic_admin_jwt_session';
 const AUDIT_STORAGE_KEY = 'lic_admin_audit_log';
+const PASSWORD_STORAGE_KEY = 'lic_admin_master_pwd';
 const CMS_EVENT_NAME = 'lic-content-cms-updated';
+const DEFAULT_PASSWORD = 'LIC2026!Admin';
+
+export function getAdminPassword() {
+  if (typeof window === 'undefined') return DEFAULT_PASSWORD;
+  return localStorage.getItem(PASSWORD_STORAGE_KEY) || DEFAULT_PASSWORD;
+}
+
+export function setAdminPassword(newPassword) {
+  if (typeof window === 'undefined' || !newPassword || newPassword.trim().length < 6) {
+    return { success: false, error: 'Password must be at least 6 characters long.' };
+  }
+  localStorage.setItem(PASSWORD_STORAGE_KEY, newPassword.trim());
+  logAudit('SECURITY', 'Administrator master password updated', 'superadmin');
+  return { success: true };
+}
+
+export function verifyAdminPassword(input) {
+  return input === getAdminPassword();
+}
 
 // Default Authentic Content
 export const DEFAULT_CONTENT_CMS = {
