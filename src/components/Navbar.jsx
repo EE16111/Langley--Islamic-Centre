@@ -28,9 +28,7 @@ export default function Navbar({
   onOpenQibla,
   onOpenAdmin,
   onOpenTVSignage,
-  nextPrayer,
-  prayerWidgetOpen = false,
-  onTogglePrayerWidget
+  nextPrayer 
 }) {
   const { theme } = useTheme();
   const isLight = theme === 'light';
@@ -125,24 +123,6 @@ export default function Navbar({
             {/* Right Action Cluster */}
             <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
               
-              {/* Quick Prayer Schedule Popover Trigger */}
-              {nextPrayer && (
-                <button
-                  onClick={onTogglePrayerWidget}
-                  className={`hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-serif font-medium transition-all ${
-                    prayerWidgetOpen
-                      ? 'bg-[#c5a059] text-[#080b10] font-bold shadow-md'
-                      : isLight
-                      ? 'bg-white border border-stone-200 hover:border-[#b38728]/50 text-stone-700 hover:text-[#b38728] shadow-sm'
-                      : 'bg-[#111722] border border-stone-800 hover:border-[#c5a059]/40 text-stone-300 hover:text-[#dfb76c] hover:bg-[#1a2436]'
-                  }`}
-                  title="Sheikh Zayed Grand Mosque Center Prayer Timings"
-                >
-                  <Clock className={`w-3 h-3 ${prayerWidgetOpen ? 'text-[#080b10]' : 'text-[#dfb76c]'}`} />
-                  <span>{nextPrayer?.next?.name || 'Prayer'}: {nextPrayer?.next?.start?.time12}</span>
-                </button>
-              )}
-
               {/* Admin CMS Button */}
               <button
                 onClick={onOpenAdmin}

@@ -100,11 +100,9 @@ Charity Reg No: 1180443`;
       </div>
 
       {/* Architectural Corner Registration Crosshairs (+) */}
-      <div className="hidden lg:block absolute top-24 left-8 text-[11px] font-mono text-[#c5a059]/40 select-none">
-        + 51.5074° N, 0.5408° W
-      </div>
-      <div className="hidden lg:block absolute top-24 right-8 text-[11px] font-mono text-[#c5a059]/40 select-none text-right">
-        QIBLA 118.9° ESE +
+      <div className="hidden lg:block absolute top-24 left-8 text-[11px] font-mono text-[#c5a059]/50 select-none space-y-0.5">
+        <div>+ 51.5074° N, 0.5408° W (Spitfire Close)</div>
+        <div className="text-[10px] text-[#c5a059]/40">QIBLA 118.91° ESE • 4,818 KM +</div>
       </div>
 
       {/* Backdrop Scene Switcher - Anchored at bottom-right corner of hero image, completely clear of navbar & hero text */}

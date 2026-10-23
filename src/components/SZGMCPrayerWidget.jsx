@@ -13,14 +13,14 @@ import { useTheme, THEMES } from '../context/ThemeContext';
 export default function SZGMCPrayerWidget({ 
   prayerData, 
   nextPrayer, 
-  isOpen = false,
-  onClose,
   onOpenTimetable 
 }) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
   const { theme } = useTheme();
 
-  if (!isOpen || !prayerData || !prayerData.prayers) return null;
+  if (!prayerData || !prayerData.prayers || isDismissed) return null;
 
   const prayers = prayerData.prayers;
   const next = nextPrayer?.next || prayers[0];
@@ -111,35 +111,32 @@ export default function SZGMCPrayerWidget({
   );
 
   return (
-    <>
-      {/* Click-outside backdrop overlay to ensure no accidental block and smooth dismiss */}
+    <div
+      className={`fixed right-3 sm:right-6 top-20 sm:top-24 z-30 transition-all duration-300 ease-out select-none print:hidden ${
+        isExpanded ? 'w-[260px] sm:w-[285px]' : 'w-[145px] sm:w-[160px]'
+      }`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Glassmorphic Container with Theme Adaptation */}
       <div 
-        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] transition-opacity" 
-        onClick={onClose} 
-      />
-
-      <div
-        className="fixed right-3 sm:right-6 top-16 sm:top-20 z-50 w-[290px] sm:w-[330px] max-h-[85vh] overflow-y-auto select-none print:hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+        className={`rounded-3xl border shadow-2xl backdrop-blur-2xl transition-all duration-300 overflow-hidden relative ${
+          isLight
+            ? 'bg-[#ffffff]/95 text-stone-800 border-[#b38728]/40 shadow-[0_20px_50px_rgba(179,135,40,0.18)] ring-1 ring-black/5'
+            : isAmbient
+            ? 'bg-[#09101d]/95 text-slate-100 border-[#e2a844]/35 shadow-[0_20px_50px_rgba(0,0,0,0.85)] ring-1 ring-white/10'
+            : 'bg-[#080b10]/95 text-[#f4f0e6] border-[#c5a059]/35 shadow-[0_25px_60px_rgba(0,0,0,0.9)] ring-1 ring-white/10'
+        }`}
       >
-        {/* Glassmorphic Container with Theme Adaptation */}
-        <div 
-          className={`rounded-3xl border shadow-2xl backdrop-blur-2xl transition-all duration-300 overflow-hidden relative ${
-            isLight
-              ? 'bg-[#ffffff]/95 text-stone-800 border-[#b38728]/40 shadow-[0_20px_50px_rgba(179,135,40,0.22)] ring-1 ring-black/5'
-              : isAmbient
-              ? 'bg-[#09101d]/95 text-slate-100 border-[#e2a844]/35 shadow-[0_20px_50px_rgba(0,0,0,0.9)] ring-1 ring-white/10'
-              : 'bg-[#080b10]/95 text-[#f4f0e6] border-[#c5a059]/35 shadow-[0_25px_60px_rgba(0,0,0,0.95)] ring-1 ring-white/10'
-          }`}
+        {/* Dismiss Button */}
+        <button
+          onClick={(e) => { e.stopPropagation(); setIsDismissed(true); }}
+          className="absolute top-2 right-2 p-1 rounded-full text-stone-400 hover:text-white bg-black/20 hover:bg-black/50 transition-colors z-20"
+          title="Dismiss widget"
+          aria-label="Dismiss widget"
         >
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="absolute top-2.5 right-2.5 p-1.5 rounded-full text-stone-400 hover:text-white bg-black/20 hover:bg-black/60 transition-colors z-20"
-            title="Close prayer timetable"
-            aria-label="Close prayer timetable"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <X className="w-3 h-3" />
+        </button>
         
         {/* Top Header Pin & Location */}
         <div 
@@ -336,6 +333,5 @@ export default function SZGMCPrayerWidget({
 
       </div>
     </div>
-  </>
   );
 }
