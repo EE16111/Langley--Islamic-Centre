@@ -26,6 +26,21 @@ export default function VolunteerModal({ isOpen, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const submission = {
+      id: 'vol_' + Date.now(),
+      submittedAt: new Date().toISOString(),
+      type: activeTab, // 'volunteer' | 'imam'
+      name: formData.name || 'Anonymous',
+      email: formData.email || '—',
+      phone: formData.phone || '—',
+      message: formData.message || ''
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem('lic_community_submissions') || '[]');
+      localStorage.setItem('lic_community_submissions', JSON.stringify([submission, ...existing]));
+    } catch (err) {
+      console.warn("Could not save community submission:", err);
+    }
     setSubmitted(true);
     confetti({
       particleCount: 50,

@@ -107,6 +107,10 @@ export default function AdminDashboardModal({
   const [contentConfig, setContentConfig] = useState(getContentCMS());
   // Audit Logs State
   const [auditLogs, setAuditLogs] = useState([]);
+  // Student Registrations Queue
+  const [quranRegistrations, setQuranRegistrations] = useState([]);
+  // Community & Volunteer Submissions Queue
+  const [communitySubmissions, setCommunitySubmissions] = useState([]);
 
   // Check JWT session validity on open
   useEffect(() => {
@@ -117,6 +121,13 @@ export default function AdminDashboardModal({
         setPrayerConfig(getPrayerCMSConfig());
         setContentConfig(getContentCMS());
         setAuditLogs(getAuditLogs());
+        try {
+          setQuranRegistrations(JSON.parse(localStorage.getItem('lic_quran_registrations') || '[]'));
+          setCommunitySubmissions(JSON.parse(localStorage.getItem('lic_community_submissions') || '[]'));
+        } catch {
+          setQuranRegistrations([]);
+          setCommunitySubmissions([]);
+        }
       } else {
         setAuthSession(null);
       }
@@ -294,6 +305,83 @@ export default function AdminDashboardModal({
     navigator.clipboard.writeText(photo.src);
     setCopiedUrlId(photo.id);
     setTimeout(() => setCopiedUrlId(null), 2500);
+  };
+
+  // Export Quran Student Applications CSV
+  const handleExportApplicationsCSV = () => {
+    if (quranRegistrations.length === 0) {
+      alert("No student registrations submitted yet.");
+      return;
+    }
+    const headers = ["ID", "Submission Date", "Student Name", "Age", "DOB", "Prior Experience", "Track", "Parent Name", "Phone", "Email", "Postcode", "Status"];
+    const rows = quranRegistrations.map(r => [
+      r.id,
+      new Date(r.submittedAt).toLocaleDateString('en-GB'),
+      `"${r.studentName}"`,
+      r.age,
+      r.dob,
+      r.priorExperience,
+      r.sessionTrack,
+      `"${r.parentName}"`,
+      `"${r.phone}"`,
+      `"${r.email}"`,
+      r.postcode,
+      r.status
+    ]);
+    const csvContent = [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `lic_quran_registrations_${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    logAudit('EXPORT', 'Exported student registrations CSV', authSession?.payload?.sub || 'admin');
+  };
+
+  const handleDeleteRegistration = (id) => {
+    if (!window.confirm("Delete this student registration record?")) return;
+    const updated = quranRegistrations.filter(r => r.id !== id);
+    setQuranRegistrations(updated);
+    localStorage.setItem('lic_quran_registrations', JSON.stringify(updated));
+    triggerSaveAlert();
+  };
+
+  // Export Community Submissions CSV
+  const handleExportCommunityCSV = () => {
+    if (communitySubmissions.length === 0) {
+      alert("No community or volunteer submissions received yet.");
+      return;
+    }
+    const headers = ["ID", "Submission Date", "Role Type", "Name", "Phone", "Email", "Message"];
+    const rows = communitySubmissions.map(c => [
+      c.id,
+      new Date(c.submittedAt).toLocaleDateString('en-GB'),
+      c.type,
+      `"${c.name}"`,
+      `"${c.phone}"`,
+      `"${c.email}"`,
+      `"${(c.message || '').replace(/"/g, '""')}"`
+    ]);
+    const csvContent = [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `lic_community_submissions_${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    logAudit('EXPORT', 'Exported community submissions CSV', authSession?.payload?.sub || 'admin');
+  };
+
+  const handleDeleteCommunitySubmission = (id) => {
+    if (!window.confirm("Delete this submission record?")) return;
+    const updated = communitySubmissions.filter(c => c.id !== id);
+    setCommunitySubmissions(updated);
+    localStorage.setItem('lic_community_submissions', JSON.stringify(updated));
+    triggerSaveAlert();
   };
 
   // 1-Click JSON Backup & Restore
@@ -1481,6 +1569,168 @@ export default function AdminDashboardModal({
                         className="w-full p-2 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-sm"
                       />
                     </div>
+                  </div>
+
+                  {/* Student Registrations Queue */}
+                  <div className="pt-4 border-t border-slate-800 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <h5 className="text-sm font-bold text-white flex items-center gap-2">
+                          <BookOpen className="w-4 h-4 text-emerald-400" />
+                          <span>Student Admissions Roster ({quranRegistrations.length})</span>
+                        </h5>
+                        <p className="text-[11px] text-slate-400">Live applications submitted via the website's Quran Academy modal</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleExportApplicationsCSV}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 flex items-center gap-1.5 self-start sm:self-auto"
+                      >
+                        <FileSpreadsheet className="w-3.5 h-3.5" />
+                        <span>Export Students (.csv)</span>
+                      </button>
+                    </div>
+
+                    {quranRegistrations.length === 0 ? (
+                      <div className="p-6 rounded-2xl bg-slate-950/60 border border-slate-800 text-center">
+                        <p className="text-xs text-slate-500">No student registration forms submitted yet.</p>
+                        <p className="text-[11px] text-slate-600 mt-1">Applications completed by parents on the public portal will appear here in real-time.</p>
+                      </div>
+                    ) : (
+                      <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950/80">
+                        <table className="w-full text-left text-xs">
+                          <thead className="bg-slate-900/90 text-slate-400 font-mono text-[10px] uppercase border-b border-slate-800">
+                            <tr>
+                              <th className="p-3">Date</th>
+                              <th className="p-3">Student Name</th>
+                              <th className="p-3">Age / DOB</th>
+                              <th className="p-3">Track / Experience</th>
+                              <th className="p-3">Parent Contact</th>
+                              <th className="p-3">Postcode</th>
+                              <th className="p-3 text-right">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                            {quranRegistrations.map((reg) => (
+                              <tr key={reg.id} className="hover:bg-slate-900/40 transition-colors">
+                                <td className="p-3 text-slate-500 font-mono text-[11px] whitespace-nowrap">
+                                  {new Date(reg.submittedAt).toLocaleDateString('en-GB')}
+                                </td>
+                                <td className="p-3 font-semibold text-white">
+                                  {reg.studentName}
+                                </td>
+                                <td className="p-3 text-slate-400">
+                                  {reg.age} yrs {reg.dob ? `(${reg.dob})` : ''}
+                                </td>
+                                <td className="p-3">
+                                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20 text-[10px]">
+                                    {reg.sessionTrack || reg.priorExperience || 'Foundation'}
+                                  </span>
+                                </td>
+                                <td className="p-3 space-y-0.5">
+                                  <div className="text-white font-medium">{reg.parentName}</div>
+                                  <div className="text-slate-500 text-[11px]">{reg.phone} • {reg.email}</div>
+                                </td>
+                                <td className="p-3 font-mono text-slate-400 uppercase">
+                                  {reg.postcode}
+                                </td>
+                                <td className="p-3 text-right">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteRegistration(reg.id)}
+                                    className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                                    title="Delete record"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Community & Volunteer Applications Queue */}
+                  <div className="pt-4 border-t border-slate-800 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <h5 className="text-sm font-bold text-white flex items-center gap-2">
+                          <Users className="w-4 h-4 text-amber-400" />
+                          <span>Community &amp; Volunteer Inquiries ({communitySubmissions.length})</span>
+                        </h5>
+                        <p className="text-[11px] text-slate-400">Applications from prospective volunteers and guest Imams / teachers</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleExportCommunityCSV}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 flex items-center gap-1.5 self-start sm:self-auto"
+                      >
+                        <FileSpreadsheet className="w-3.5 h-3.5" />
+                        <span>Export Inquiries (.csv)</span>
+                      </button>
+                    </div>
+
+                    {communitySubmissions.length === 0 ? (
+                      <div className="p-6 rounded-2xl bg-slate-950/60 border border-slate-800 text-center">
+                        <p className="text-xs text-slate-500">No volunteer or imam inquiries submitted yet.</p>
+                        <p className="text-[11px] text-slate-600 mt-1">Community members submitting through the Get Involved modal will appear here.</p>
+                      </div>
+                    ) : (
+                      <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950/80">
+                        <table className="w-full text-left text-xs">
+                          <thead className="bg-slate-900/90 text-slate-400 font-mono text-[10px] uppercase border-b border-slate-800">
+                            <tr>
+                              <th className="p-3">Date</th>
+                              <th className="p-3">Type</th>
+                              <th className="p-3">Name</th>
+                              <th className="p-3">Contact</th>
+                              <th className="p-3">Message / Specialism</th>
+                              <th className="p-3 text-right">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                            {communitySubmissions.map((item) => (
+                              <tr key={item.id} className="hover:bg-slate-900/40 transition-colors">
+                                <td className="p-3 text-slate-500 font-mono text-[11px] whitespace-nowrap">
+                                  {new Date(item.submittedAt).toLocaleDateString('en-GB')}
+                                </td>
+                                <td className="p-3">
+                                  <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
+                                    item.type === 'imam' 
+                                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' 
+                                      : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                                  }`}>
+                                    {item.type || 'Volunteer'}
+                                  </span>
+                                </td>
+                                <td className="p-3 font-semibold text-white">
+                                  {item.name}
+                                </td>
+                                <td className="p-3 space-y-0.5">
+                                  <div className="text-slate-300">{item.phone}</div>
+                                  <div className="text-slate-500 text-[11px]">{item.email}</div>
+                                </td>
+                                <td className="p-3 text-slate-400 max-w-xs truncate" title={item.message}>
+                                  {item.message || '—'}
+                                </td>
+                                <td className="p-3 text-right">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteCommunitySubmission(item.id)}
+                                    className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                                    title="Delete record"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

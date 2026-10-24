@@ -47,6 +47,28 @@ export default function QuranRegistrationModal({ isOpen, onClose }) {
       setStep(step + 1);
     } else {
       // Final Submit
+      const newSubmission = {
+        id: 'reg_' + Date.now(),
+        submittedAt: new Date().toISOString(),
+        studentName: formData.studentName || 'Student',
+        age: formData.age || '—',
+        dob: formData.dob || '—',
+        priorExperience: formData.priorExperience,
+        sessionTrack: formData.sessionTrack,
+        parentName: formData.parentName || 'Parent / Guardian',
+        phone: formData.phone || '—',
+        email: formData.email || '—',
+        postcode: formData.postcode || 'SL3',
+        status: 'Pending Diagnostic'
+      };
+
+      try {
+        const existing = JSON.parse(localStorage.getItem('lic_quran_registrations') || '[]');
+        localStorage.setItem('lic_quran_registrations', JSON.stringify([newSubmission, ...existing]));
+      } catch (err) {
+        console.warn("Could not save registration locally:", err);
+      }
+
       setSubmitted(true);
       confetti({
         particleCount: 80,

@@ -11,6 +11,50 @@
     <meta property="og:description" content="A welcoming place to learn, connect, grow and contribute at Spitfire Close, Langley, SL3 8GY. Support our new permanent home." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/src/assets/SpitFireSlider.jpg" />
+
+    <!-- Web App & Mobile PWA Affordances -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#080b10" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="LIC Mosque" />
+    <link rel="apple-touch-icon" href="/src/assets/lic_emblem.svg" />
+
+    <!-- Schema.org JSON-LD for Mosque & UK Registered Charity -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["Mosque", "PlaceOfWorship", "NGO"],
+      "name": "Langley Islamic Centre",
+      "alternateName": "LIC Slough",
+      "identifier": "1180443",
+      "description": "Place of worship, Quran academy, and community hub for Langley and Slough. Registered UK Charity #1180443.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Unit 2, Spitfire Close",
+        "addressLocality": "Langley, Slough",
+        "addressRegion": "Berkshire",
+        "postalCode": "SL3 8GY",
+        "addressCountry": "GB"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 51.5078,
+        "longitude": -0.5428
+      },
+      "telephone": "+447843732106",
+      "email": "info@langleyislamiccentre.co.uk",
+      "url": "https://www.langleyislamiccentre.co.uk",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "05:00",
+          "closes": "22:30"
+        }
+      ]
+    }
+    </script>
     
     <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

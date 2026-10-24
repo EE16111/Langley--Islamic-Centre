@@ -1,5 +1,6 @@
 import React from 'react';
 import { LIC_DATA } from '../data/content';
+import { useContentCMS } from '../hooks/useContentCMS';
 import { 
   BookOpen, 
   Calendar, 
@@ -14,6 +15,10 @@ import {
 
 export default function QuranClassesSection({ onOpenQuranModal }) {
   const qc = LIC_DATA.quranClasses;
+  const { content } = useContentCMS();
+  const madrasahConfig = content?.madrasah || {};
+  const monthlyFee = madrasahConfig.monthlyFee ?? 35;
+  const admissionsOpen = madrasahConfig.admissionsOpen ?? true;
 
   return (
     <section id="quran-classes" className="py-28 relative bg-transparent border-t border-[#c5a059]/15 overflow-hidden">
@@ -138,7 +143,7 @@ export default function QuranClassesSection({ onOpenQuranModal }) {
               <h3 className="text-xl font-serif font-bold text-[#f4f0e6] mb-2">Community Rate</h3>
               
               <div className="flex items-baseline gap-2 mb-4 p-3 rounded-xl bg-[#1b4931]/20 border border-[#74c69d]/20">
-                <span className="text-4xl font-serif font-bold text-[#f4f0e6]">£40</span>
+                <span className="text-4xl font-serif font-bold text-[#f4f0e6]">£{monthlyFee}</span>
                 <span className="text-xs text-slate-300">/ child per month (Standing Order)</span>
               </div>
 
@@ -163,7 +168,7 @@ export default function QuranClassesSection({ onOpenQuranModal }) {
                 onClick={onOpenQuranModal}
                 className="w-full btn-monumental-gold py-3.5 px-4 rounded-xl text-xs font-serif font-bold tracking-wider uppercase flex items-center justify-center gap-2 shadow-lg"
               >
-                <span>Express Interest &amp; Register</span>
+                <span>{admissionsOpen ? 'Express Interest & Register' : 'Join Admissions Waitlist'}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

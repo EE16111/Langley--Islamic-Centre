@@ -1,0 +1,18 @@
+{
+  "name": "Langley Islamic Centre",
+  "short_name": "LIC Mosque",
+  "description": "Langley Islamic Centre (CIO #1180443) - Daily Prayer Timetable, Qibla Finder, Spitfire Close Appeal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080b10",
+  "theme_color": "#080b10",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/src/assets/lic_emblem.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
