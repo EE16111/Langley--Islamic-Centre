@@ -116,6 +116,14 @@ export default function App() {
         : 'bg-[#080b10] text-slate-100'
     }`}>
       
+      {/* Skip to Content Accessible Link (WCAG 2.2 AA 2.4.1) */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-amber-400 focus:text-neutral-950 focus:font-bold focus:rounded-xl focus:shadow-2xl focus:outline-none"
+      >
+        Skip to Main Content
+      </a>
+
       {/* Top Navigation */}
       <Navbar 
         nextPrayer={nextPrayer}
@@ -130,11 +138,11 @@ export default function App() {
 
       {/* Conditional View: Dedicated Qibla Page or Main Content Sections */}
       {viewMode === 'qibla' ? (
-        <main className="flex-1 pt-16">
+        <main id="main-content" className="flex-1 pt-16">
           <QiblaPage onBack={() => { setViewMode('home'); window.location.hash = ''; }} />
         </main>
       ) : (
-        <main className="flex-1">
+        <main id="main-content" className="flex-1">
           <Hero 
             nextPrayer={nextPrayer}
             onOpenDonate={() => setDonationModalOpen(true)}

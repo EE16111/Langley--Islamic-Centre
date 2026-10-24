@@ -29,6 +29,22 @@
     font-family: 'Cormorant Garamond', 'Georgia', serif;
     letter-spacing: -0.015em;
   }
+
+  /* Accessible Keyboard Focus Indicators (WCAG 2.2 AA 2.4.7 & 2.4.11) */
+  :focus-visible {
+    outline: 2px solid #dfb76c;
+    outline-offset: 2px;
+  }
+
+  [data-theme="light"] :focus-visible {
+    outline: 2px solid #78500c;
+    outline-offset: 2px;
+  }
+
+  [data-theme="ambient"] :focus-visible {
+    outline: 2px solid #f5b74f;
+    outline-offset: 2px;
+  }
 }
 
 /* Custom Sleek Scrollbar */
